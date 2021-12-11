@@ -42,3 +42,29 @@ Executing busybox-1.31.1-r20.trigger
 OK: 246 MiB in 56 packages
 
 
+ apk add openssh
+ ssh januszoles@192.168.0.94
+ history |grep ssh
+ cd .ssh
+ ssh-keygen -o
+ cat /root/.ssh/id_rsa.pub 
+ ssh-add /root/.ssh/id_rsa
+ ssh-keygen --help
+ less /etc/ssh/sshd_config 
+ which openssh
+ echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config 
+ /usr/sbin/sshd
+ ssh-keygen -A
+ cd .ssh/
+ cat /root/.ssh/id_rsa.pub
+ ssh git@github.com:januszoles/ish.git
+ eval `ssh-agent -s`
+ ssh-add
+ eval "$(ssh-agent -s)"
+ cd .ssh/
+ ssh-add -K id_rsa
+ eval `ssh-agent -s`
+ ssh-add
+ cd .ssh/
+ history |grep ssh > ssh-notes.txt
+
