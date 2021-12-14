@@ -40,8 +40,27 @@ fetch http://apk.ish.app/v3.12-2021-06-24/community/x86/APKINDEX.tar.gz
 Executing busybox-1.31.1-r20.trigger
 OK: 246 MiB in 56 packages
 ```
+## ssh conf
 
+	~/.ssh/
+		default location for all user-specific
+		configuration and authentication information.  
+		permissions are r/w/x for user, none for otheres
+```	
+drwx------    5 root     root         160 Dec  9 13:07 .ssh/
+```
+	~/.ssh/id_rsa
+		Contains the private key for authentication.  
+		Should be readable by the user but not
+		accessible by others (read/write/execute).   
+		! ssh will *ignore* a private key file if it is accessible by others.	
+```
+-rw-------    1 root     root        2.5K Dec  9 13:07 id_rsa
+-rw-r--r--    1 root     root         570 Dec  9 13:07 id_rsa.pub
+-rw-r--r--    1 root     root         533 Dec  9 18:21 known_hosts
+```
 ```bash
+
 apk add openssh
 ssh januszoles@192.168.0.94
 history |grep ssh
