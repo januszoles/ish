@@ -76,15 +76,13 @@ github.com,140.82.121.3 ecdsa-sha2-nistp256 AAAAE2V0U2...wockg=
 ```
 
 ### run an ssh server on iOS.
-`apk add openssh` — install ssh and ssh server. 
-
-`ssh-keygen -A` — create host keys. 
-
-`passwd` — set a password for root to protect your iOS device 
-
-`echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config` – modified config file for root login. 
-
-`/usr/sbin/sshd` – start ssh demon
+```bash
+apk add openssh  # install ssh and ssh server. 
+ssh-keygen -A    # create host keys. 
+passwd           # set a password for root to protect your iOS device 
+echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config  # modified config for root login. 
+/usr/sbin/sshd   # start ssh demon
+```
 
 You should now be able to ssh to your device with username root and the password you typed.
 
