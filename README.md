@@ -20,9 +20,7 @@ $ cat /etc/shells
 ```
 ```bash
 apk add python3
-apk add openssh
 apk add vim
-apk add gcc
 apk add rsync
 apk add tree
 apk add git
@@ -59,10 +57,47 @@ drwx------    5 root     root         160 Dec  9 13:07 .ssh/
 -rw-r--r--    1 root     root         570 Dec  9 13:07 id_rsa.pub
 -rw-r--r--    1 root     root         533 Dec  9 18:21 known_hosts
 ```
-```bash
+	~/.ssh/id_rsa.pub
+		Contains the public key for authentication.  These files are not
+		sensitive and can (but need not) be readable by anyone.
 
-apk add openssh
-ssh januszoles@192.168.0.94
+	~/.ssh/known_hosts
+		Contains a list of host keys for all hosts the user has logged
+		into that are not already in the systemwide list of known host
+		keys. See sshd(8) for further details of the format of this file.
+
+```bash
+iPad:~/.ssh# cat known_hosts
+# truncuted for redability.
+192.168.0.94 ecdsa-sha2-nistp256 AAAAE2VijZHNhLX...T+0=
+github.com,140.82.121.3 ecdsa-sha2-nistp256 AAAAE2V0U2...wockg=
+140.82.121.4 ecdsa-sha2-nistp256 AAAAE2VjTY.../++Tpockg=
+
+```
+
+### run an ssh server on iOS.
+`apk add openssh` — install ssh and ssh server. 
+
+`ssh-keygen -A` — create host keys. 
+
+`passwd` — set a password for root to protect your iOS device 
+
+`echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config` – modified config file for root login. 
+
+`/usr/sbin/sshd` – start ssh demon
+
+You should now be able to ssh to your device with username root and the password you typed.
+
+### SSH from the same device
+
+If you are trying to connect via ssh from the same device, make sure you set the port configuration of sshd to use a non standard one (greater than 1024, eg: 22000).
+
+You can do this by editing `/etc/ssh/sshd_config` and set `Port 22000` (Replace _22000_ with any non-standard port).
+
+After this, you can ssh (from iSH itself) using `ssh root@localhost -p 22000`
+
+```
+januszoles@192.168.0.94
 history |grep ssh
 cd .ssh
 ssh-keygen -o
@@ -70,10 +105,7 @@ cat /root/.ssh/id_rsa.pub
 ssh-add /root/.ssh/id_rsa
 ssh-keygen --help
 less /etc/ssh/sshd_config 
-which openssh
-echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config 
 /usr/sbin/sshd
-ssh-keygen -A
 cd .ssh/
 cat /root/.ssh/id_rsa.pub
 ssh git@github.com:januszoles/ish.git
