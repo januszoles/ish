@@ -76,7 +76,7 @@ github.com,140.82.121.3 ecdsa-sha2-nistp256 AAAAE2V0U2...wockg=
 
 ### run an ssh server on iOS.
 
-```txt
+```bash
 apk add openssh    # install ssh and ssh server. 
 ssh-keygen -A      # create host keys (no questions asks!) 
 passwd             # set a password for root to protect your iOS device 
