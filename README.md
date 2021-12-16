@@ -30,14 +30,6 @@ apk add glow
 # wright to README.md from cli using sed.
 sed -i '18i \\n## Install glow - md viewer\napk add glow' README.md 
 ```
-```txt
-apk add glow
-fetch http://apk.ish.app/v3.12-2021-06-25/main/x86/APKINDEX.tar.gz
-fetch http://apk.ish.app/v3.12-2021-06-24/community/x86/APKINDEX.tar.gz
-(1/1) Installing glow (0.2.0-r1)
-Executing busybox-1.31.1-r20.trigger
-OK: 246 MiB in 56 packages
-```
 ## ssh conf
 
 	~/.ssh/
@@ -66,7 +58,7 @@ drwx------    5 root     root         160 Dec  9 13:07 .ssh/
 		into that are not already in the systemwide list of known host
 		keys. See sshd(8) for further details of the format of this file.
 
-```txt
+```bash
 iPad:~/.ssh# cat known_hosts
 # truncuted for redability.
 192.168.0.94 ecdsa-sha2-nistp256 AAAAE2VijZHNhLX...T+0=
@@ -87,13 +79,14 @@ You should now be able to ssh to your device with username root and the password
 
 #### First time ssh from mac to iPad:
 
-```txt
-# on mac:
+on mac:
+```bash
 ssh root@192.168.0.24
-ssh: connect to host 192.168.0.24 port 22: Connection refused
+     ssh: connect to host 192.168.0.24 port 22: Connection refused
+```
+if connection refused go back to iPad and restart ssh  
 
-# if connection refused go back to iPad and restart ssh  
-/usr/sbin/sshd
+```/usr/sbin/sshd```
 
 # next try on mac:
 # NOTE: one can only ssh to iPad when /usr/sbin/sshd is ON on iPad. 
