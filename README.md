@@ -78,7 +78,7 @@ github.com,140.82.121.3 ecdsa-sha2-nistp256 AAAAE2V0U2...wockg=
 
 ```txt
 apk add openssh  # install ssh and ssh server. 
-ssh-keygen -A    # create host keys. 
+ssh-keygen -A    # create host keys (no questions asks!) 
 passwd           # set a password for root to protect your iOS device 
 echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config  # modified config for root login. 
 /usr/sbin/sshd   # start ssh demon
@@ -114,7 +114,6 @@ After this, you can ssh (from iSH itself) using `ssh root@localhost -p 22000`
 
 ```txt
 januszoles@192.168.0.94
-ssh-keygen -o
 cat /root/.ssh/id_rsa.pub 
 ssh-add /root/.ssh/id_rsa
 ssh-keygen --help
