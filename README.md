@@ -77,31 +77,31 @@ echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config  # modified config for root l
 ```
 You should now be able to ssh to your device with username root and the password you typed.
 
-#### First time ssh from mac to iPad:
+#### First time ssh from Mac to iPad:
 
 on mac:
 ```bash
 ssh root@192.168.0.24
      ssh: connect to host 192.168.0.24 port 22: Connection refused
 ```
-if connection refused go back to iPad and restart ssh  
-
-```/usr/sbin/sshd```
-
-# next try on mac:
-# NOTE: one can only ssh to iPad when /usr/sbin/sshd is ON on iPad. 
+If connection refused go back to iPad and restart ssh  
+```
+/usr/sbin/sshd    # start ssh server
+```
+next try on mac:
+> NOTE: one can only ssh to iPad when /usr/sbin/sshd is ON on iPad. 
+```
 ➜ ssh root@192.168.0.24
 The authenticity of host '192.168.0.24 (192.168.0.24)' can't be established.  
 ECDSA key fingerprint is SHA256:JVK7lKOF+6xoDoYGWC0L/ZG8CxY9DfUPN4An6/vqZ5s.  
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes  
 Warning: Permanently added '192.168.0.24' (ECDSA) to the list of known hosts.  
-root@192.168.0.24's password:  
+root@192.168.0.24's password:  # type root password 
 Welcome to Alpine!  
-# NOTE: iPad can close connection at any time.
-
 ```
-### SSH from the same device
+> NOTE: iPad can close connection at any time.
 
+### SSH from the same device
 If you are trying to connect via ssh from the same device, make sure you set the port configuration of sshd to use a non standard one (greater than 1024, eg: 22000).
 You can do this by editing `/etc/ssh/sshd_config` and set `Port 22000` (Replace _22000_ with any non-standard port).
 After this, you can ssh (from iSH itself) using `ssh root@localhost -p 22000`
@@ -115,8 +115,8 @@ iPad:~# pwd
 iPad:~# ssh-keygen -C 'J13'
 Generating public/private rsa key pair.
 Enter file in which to save the key (/root/.ssh/id_rsa): /root/.ssh/id_rsa_j13
-Enter passphrase (empty for no passphrase): 
-Enter same passphrase again: 
+Enter passphrase (empty for no passphrase): # press Enter
+Enter same passphrase again: # press Enter
 Your identification has been saved in /root/.ssh/id_rsa_j13
 Your public key has been saved in /root/.ssh/id_rsa_j13.pub
 The key fingerprint is:
@@ -135,7 +135,7 @@ The key's randomart image is:
 +----[SHA256]-----+
 
 # Copy public key from iPad to Mac
-iPad-Janusz:~# scp ~/.ssh/id_rsa_j13.pub januszoles@192.168.0.94:/Users/januszoles/.ssh/id_rsa_j13.pub
+iPad:~# scp ~/.ssh/id_rsa_j13.pub januszoles@192.168.0.94:/Users/januszoles/.ssh/id_rsa_j13.pub
 Password:
 id_rsa_j13.pub                                                        100%  557    17.6KB/s   00:00    
 
@@ -198,18 +198,11 @@ ssh-rsa A#####...####= root@iPad
 ```
 Now I can login to Mac without password. 
 
-
-
 ```txt
 # TODO
-januszoles@192.168.0.94
-less /etc/ssh/sshd_config 
-cat /root/.ssh/id_rsa.pub
 ssh git@github.com:januszoles/ish.git
 eval `ssh-agent -s`
 eval "$(ssh-agent -s)"
 ssh-add -K id_rsa
-eval `ssh-agent -s`
-ssh-add
 ```
 
