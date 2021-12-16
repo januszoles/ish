@@ -4,7 +4,7 @@ This is a test.
 
 ## Install bash
 
-```txt
+```bash
 apk update
 apk upgrade
 
@@ -13,11 +13,13 @@ apk add bash-completion
 ```
 ```txt
 $ cat /etc/shells
-# valid login shells
-/bin/sh
-/bin/ash
-/bin/bash
 ```
+---
+	# valid login shells
+	/bin/sh
+	/bin/ash
+	/bin/bash
+---
 ```txt
 apk add python3
 apk add vim
