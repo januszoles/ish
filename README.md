@@ -213,6 +213,24 @@ ssh-rsa A#####...####= root@iPad
 Now I can login to Mac without password. 
 
 ```txt
+## Create host config file to simplyfy login
+
+> NOTE: `~/.ssh/config`  DOES NOT exist by default.
+
+```bash
+iPad: cat << EOF > /root/.ssh/config
+Host j13
+    Hostname 192.168.0.94
+    Port 22
+    User januszoles
+EOF
+```
+
+Now I can login to my mac by typing:
+```bash
+ssh j13
+```
+
 # TODO
 ssh git@github.com:januszoles/ish.git
 eval `ssh-agent -s`
