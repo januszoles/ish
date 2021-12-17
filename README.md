@@ -116,7 +116,7 @@ After this, you can ssh (from iSH itself) using `ssh root@localhost -p 22000`
 ## Configurte PasswordLess login from iPad to Mac
 
 ```bash
-iPad:~ ssh-keygen -C 'J13'
+iPad: ssh-keygen -C 'J13'
 Generating public/private rsa key pair.
 Enter file in which to save the key (/root/.ssh/id_rsa): /root/.ssh/id_rsa_j13
 Enter passphrase (empty for no passphrase): # press Enter
@@ -142,21 +142,21 @@ The key's randomart image is:
 #### Copy public key from iPad to Mac
 
 ```bash
-iPad:~ scp ~/.ssh/id_rsa_j13.pub januszoles@192.168.0.94:/Users/januszoles/.ssh/id_rsa_j13.pub
+iPad: scp ~/.ssh/id_rsa_j13.pub januszoles@192.168.0.94:/Users/januszoles/.ssh/id_rsa_j13.pub
 Password:
 id_rsa_j13.pub                                                        100%  557    17.6KB/s   00:00    
 ```
 #### Login from iPad to Mac
 
 ```bash
-iPad:~ ssh januszoles@192.168.0.94
+iPad: ssh januszoles@192.168.0.94
 Password:
 Last login: Thu Dec 16 09:10:30 2021
 ```
 #### After succesfull login to Mac
 
 ```bash
- ➜ ls -al ~/.ssh
+ ➜ ls -Al ~/.ssh
 -rw-r--r--    1 januszoles  staff   557 Dec 16 09:14 id_rsa_j13.pub
 -rw-r--r--    1 januszoles  staff  1692 Dec 16 00:03 known_hosts
 ```
@@ -168,7 +168,7 @@ Last login: Thu Dec 16 09:10:30 2021
 ➜ cat ~/.ssh/id_rsa_j13.pub >> ~/.ssh/authorized_keys
 ```
 ```bash
- ➜ ls -al ~/.ssh
+ ➜ ls -Al ~/.ssh
 -rw-r--r--    1 januszoles  staff   557 Dec 16 09:19 authorized_keys
 -rw-r--r--    1 januszoles  staff   557 Dec 16 09:14 id_rsa_j13.pub
 -rw-r--r--    1 januszoles  staff  1692 Dec 16 00:03 known_hosts
@@ -198,11 +198,11 @@ The agent has no identities.
 ```
 ```bash
 # Add private keys to ssh-agent
-iPad:~# ssh-add /root/.ssh/id_rsa_j13
+iPad: ssh-add /root/.ssh/id_rsa_j13
 Identity added: /root/.ssh/id_rsa_j13 (J13)
 ```
 ```bash
-iPad:~# ssh-add /root/.ssh/id_rsa
+iPad: ssh-add /root/.ssh/id_rsa
 Identity added: /root/.ssh/id_rsa (root@iPad)
 ```
 ```bash
