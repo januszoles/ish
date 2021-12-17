@@ -212,8 +212,7 @@ ssh-rsa A#####...####= root@iPad
 ```
 Now I can login to Mac without password. 
 
-```txt
-## Create host config file to simplyfy login
+## Create host config file to simplify login
 
 > NOTE: `~/.ssh/config`  DOES NOT exist by default.
 
