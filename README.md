@@ -26,6 +26,7 @@ apk add rsync
 apk add tree
 apk add git
 apk add glow
+apk add tmux
 ```
 ```bash
 # wright to README.md from cli using sed.
@@ -107,6 +108,9 @@ root@192.168.0.24's password:  # type root password
 Welcome to Alpine!  
 ```
 > NOTE: iPad can close connection at any time.
+>       Hack to keep iPad session alife: 
+>   `cat /dev/location > /dev/null &`
+
 
 ### SSH from the same device (not tested yet)
 If you are trying to connect via ssh from the same device, make sure you set the port configuration of sshd to use a non standard one (greater than 1024, eg: 22000).
@@ -229,6 +233,8 @@ Now I can login to my mac by typing:
 ```bash
 ssh j13
 ```
+Next I can create similar config on my mac server (j13)
+so I can ssh to the ipad by typing: `ssh ipad`
 
 # TODO
 ssh git@github.com:januszoles/ish.git
