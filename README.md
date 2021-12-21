@@ -2,33 +2,6 @@
 
 ## Notes about iSH and SSH configuration on iPad and Mac 
 
-## Install bash
-
-```bash
-apk update
-apk upgrade
-
-apk add bash
-apk add bash-completion
-```
-```bash
-iPad: cat /etc/shells
-# valid login shells
-/bin/sh
-/bin/ash
-/bin/bash
-```
-## Add more apps
-
-```bash
-apk add python3
-apk add vim
-apk add rsync
-apk add tree
-apk add git
-apk add glow
-apk add tmux
-```
 
 ```bash
 # wright to README.md from cli using sed.
@@ -328,3 +301,89 @@ stop ssh
 start ssh  
 ```sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist```
 
+---
+## Add SSHD to OpenRC so it starts when you open the iSH.app
+
+1. What is OpenRC?
+
+ipad:~# `apk info openrc`
+
+	openrc-0.43.3-r2 description:
+	OpenRC manages the services, startup and shutdown of a host
+
+	openrc-0.43.3-r2 webpage:
+	https://github.com/OpenRC/openrc
+
+	openrc-0.43.3-r2 installed size:
+	2528 KiB
+
+
+2. Try if rc-update is installed. 
+
+ipad:~# `rc-update`
+
+	-ash: rc-update: not found
+
+3. Install
+
+ipad~# `apk add openrc`
+
+4. Edit  `/etc/inittab` 
+
+ipad :~# `vim /etc/inittab` 
+
+find:
+```
+::sysinit:/sbin/openrc sysinit
+```
+change to:
+```
+::sysinit:/sbin/openrc
+```
+```
+# /etc/inittab
+
+::sysinit:/sbin/openrc
+::sysinit:/sbin/openrc boot
+::wait:/sbin/openrc default
+tty1::respawn:/sbin/getty 38400 tty1
+::ctrlaltdel:/sbin/reboot
+::shutdown:/sbin/openrc shutdown
+```
+
+05. Restart iSH
+
+ipad:~# `exit`
+
+06. Check status
+
+ipad:~# `rc-status` 	 
+
+    Runlevel: sysinit. 
+    Dynamic Runlevel: hotplugged  
+    Dynamic Runlevel: needed/wanted  
+    Dynamic Runlevel: manual  
+
+7. Add sshd to sysinit 
+
+ipad:~# `rc-update add sshd`  
+
+	* service sshd added to runlevel sysinit
+
+8. Check
+
+ipad:~# `rc-status`
+
+	Runlevel: sysinit
+	sshd                                     [  stopped  ]
+	Dynamic Runlevel: hotplugged
+	Dynamic Runlevel: needed/wanted
+	Dynamic Runlevel: manual
+
+9. Exit. Close the app and start iSH again
+
+10. Check if sshd started
+
+ipad:~# `rc-service sshd status`
+
+	* status: started
