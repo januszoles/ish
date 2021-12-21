@@ -123,7 +123,7 @@ After this, you can ssh (from iSH itself) using `ssh root@localhost -p 22000`
 ## PasswordLess login from iPad to Mac
 
 
-iPad: /root/.ssh 
+iPad: /root/.ssh  
 ```ssh-keygen -C 'J13'```
 ```
 Generating public/private rsa key pair.
@@ -150,7 +150,7 @@ The key's randomart image is:
 
 #### Copy public key from iPad to Mac
 
-iPad:
+iPad:  
 ```scp ~/.ssh/id_rsa_j13.pub januszoles@192.168.0.94:/Users/januszoles/.ssh/id_rsa_j13.pub```
 ```
 Password:
@@ -158,7 +158,7 @@ id_rsa_j13.pub                                                        100%  557 
 ```
 #### Login from iPad to Mac
 
-iPad:
+iPad:  
 ```ssh januszoles@192.168.0.94```
 ```
 Password:
@@ -265,7 +265,7 @@ Next, create config on my mac (j13) so I could ssh to my ipad by typing: `ssh ip
   |o       o        |
   +----[SHA256]-----+
   ```
-  mac: ~/.ssh/  
+  mac: ~/.ssh/   
    ➜ `ls -Al` 
    ```
    -rw-r--r--  1 januszoles  staff   557B Dec 16 09:19 authorized_keys
@@ -274,7 +274,7 @@ Next, create config on my mac (j13) so I could ssh to my ipad by typing: `ssh ip
    -rw-r--r--  1 januszoles  staff   564B Dec 20 23:19 id_rsa_j13-2-ipad.pub
    -rw-r--r--  1 januszoles  staff   1.7K Dec 16 00:03 known_hosts
    ```
-#### Edit mac:~/.ssh/config file
+#### Edit mac:~/.ssh/config file   
 ```vim confg```
 
 ```
@@ -285,9 +285,9 @@ Host ipad
     User root
 ```
 
-#### Copy public key to ipad
-   mac: ~/.ssh/
-    ➜ ```scp ./id_rsa_j13-2-ipad.pub ipad:/root/.ssh/id_rsa_j13-2-ipad.pub```
+#### Copy public key to ipad  
+mac: ~/.ssh/  
+```scp ./id_rsa_j13-2-ipad.pub ipad:/root/.ssh/id_rsa_j13-2-ipad.pub```
 ```
     root@192.168.0.24's password: 
     id_rsa_j13-2-ipad.pub                                                 100%  564    35.7KB/s   00:00
@@ -296,8 +296,8 @@ Host ipad
 ## ON IPAD
 
 ### Copy mac public key to authorized_key file
-iPad:~/.ssh# 
-```cat id_rsa_j13-2-ipad.pub >> authorized_keys```
+iPad:~/.ssh#   
+```cat id_rsa_j13-2-ipad.pub >> authorized_keys```  
 
 #### ipad:/root/.ssh/config file
 
@@ -310,7 +310,7 @@ Host j13
     User januszoles
 ``` 
 
-iPad:~/.ssh# ls -Al
+iPad:~/.ssh# ls -Al  
 
 ```
 -rw-r--r--    1 root     root           564 Dec 20 22:40 authorized_keys
@@ -322,9 +322,9 @@ iPad:~/.ssh# ls -Al
 ```
 # ON MAC
 
-stop ssh
+stop ssh  
 ```sudo launchctl unload  /System/Library/LaunchDaemons/ssh.plist``` 
 
-start ssh
+start ssh  
 ```sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist```
 
