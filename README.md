@@ -238,8 +238,8 @@ ssh j13
 ```
 
 Next, create config on my mac (j13) so I could ssh to my ipad by typing: `ssh ipad`
----
-## ON mac: Create public/private keys for mac-2-ipad connection
+
+### ON mac: Create public/private keys for mac-2-ipad connection
 
  mac: ~/.ssh/
   ➜ ```ssh-keygen -C 'j13-2-ipad'```
@@ -320,7 +320,7 @@ iPad:~/.ssh# ls -Al
 -rw-r--r--    1 root     root           557 Dec 16 07:57 id_rsa_j13.pub
 -rw-r--r--    1 root     root           533 Dec  9 18:21 known_hosts
 ```
-# ON MAC
+## ON MAC
 
 stop ssh  
 ```sudo launchctl unload  /System/Library/LaunchDaemons/ssh.plist``` 
