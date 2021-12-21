@@ -1,5 +1,7 @@
 # iSH
 
+## Notes about iSH and SSH configuration on iPad and Mac 
+
 ## Install bash
 
 ```bash
@@ -16,7 +18,7 @@ iPad: cat /etc/shells
 /bin/ash
 /bin/bash
 ```
-## Add more apks
+## Add more apps
 
 ```bash
 apk add python3
@@ -27,6 +29,7 @@ apk add git
 apk add glow
 apk add tmux
 ```
+
 ```bash
 # wright to README.md from cli using sed.
 iPad: sed -i '18i \\n## Install glow - md viewer\napk add glow' README.md 
@@ -117,10 +120,12 @@ If you are trying to connect via ssh from the same device, make sure you set the
 You can do this by editing `/etc/ssh/sshd_config` and set `Port 22000` (Replace _22000_ with any non-standard port).
 After this, you can ssh (from iSH itself) using `ssh root@localhost -p 22000`
 
-## Configurte PasswordLess login from iPad to Mac
+## PasswordLess login from iPad to Mac
 
-```bash
-iPad: ssh-keygen -C 'J13'
+
+iPad: /root/.ssh 
+```ssh-keygen -C 'J13'```
+```
 Generating public/private rsa key pair.
 Enter file in which to save the key (/root/.ssh/id_rsa): /root/.ssh/id_rsa_j13
 Enter passphrase (empty for no passphrase): # press Enter
@@ -145,15 +150,17 @@ The key's randomart image is:
 
 #### Copy public key from iPad to Mac
 
-```bash
-iPad: scp ~/.ssh/id_rsa_j13.pub januszoles@192.168.0.94:/Users/januszoles/.ssh/id_rsa_j13.pub
+iPad:
+```scp ~/.ssh/id_rsa_j13.pub januszoles@192.168.0.94:/Users/januszoles/.ssh/id_rsa_j13.pub```
+```
 Password:
 id_rsa_j13.pub                                                        100%  557    17.6KB/s   00:00    
 ```
 #### Login from iPad to Mac
 
-```bash
-iPad: ssh januszoles@192.168.0.94
+iPad:
+```ssh januszoles@192.168.0.94```
+```
 Password:
 Last login: Thu Dec 16 09:10:30 2021
 ```
@@ -205,14 +212,10 @@ The agent has no identities.
 iPad: ssh-add /root/.ssh/id_rsa_j13
 Identity added: /root/.ssh/id_rsa_j13 (J13)
 ```
-```bash
-iPad: ssh-add /root/.ssh/id_rsa
-Identity added: /root/.ssh/id_rsa (root@iPad)
-```
+
 ```bash
 iPad: ssh-add -L
 ssh-rsa A#####...####= J13
-ssh-rsa A#####...####= root@iPad
 ```
 Now I can login to Mac without password. 
 
@@ -234,7 +237,7 @@ Now I can login to my mac by typing:
 ssh j13
 ```
 
-Next I can create similar config on my mac server (j13) so I could ssh to my ipad by typing: `ssh ipad`
+Next, create config on my mac (j13) so I could ssh to my ipad by typing: `ssh ipad`
 ---
 ## ON mac: Create public/private keys for mac-2-ipad connection
 
@@ -296,11 +299,10 @@ Host ipad
 iPad:~/.ssh# 
 ```cat id_rsa_j13-2-ipad.pub >> authorized_keys```
 
-
 #### ipad:/root/.ssh/config file
 
 ```bash
-# identityFile shows where is a privet key for mac
+# IdentityFile points to location where the privet key for mac login is.
 Host j13
     Hostname 192.168.0.94
     Port 22
