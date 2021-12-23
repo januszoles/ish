@@ -10,8 +10,8 @@ iPad: sed -i '18i \\n## Install glow - md viewer\napk add glow' README.md
 ## SSH Configuration
 
 > Note:  
- 	Mac Prompt:      `➜ `    
-	iPad prompt:     `iPad:`     
+ 	Mac Prompt:      `mac:`    
+	iPad prompt:     `ipad:`     
 
 ### Intro, Basics from MAN Pages
 	~/.ssh/
@@ -24,8 +24,8 @@ drwx------    5 root     root         160 Dec  9 13:07 .ssh/
 	~/.ssh/id_rsa
 		Contains the private key for authentication.  
 		Should be readable by the user but not
-		accessible by others (read/write/execute).   
-		! ssh will *ignore* a private key file if it is accessible by others.	
+		accessible by others.   
+		!!! ssh will IGNORE a private key file if it is accessible by others.	
 ```txt
 -rw-------    1 root     root        2.5K Dec  9 13:07 id_rsa
 -rw-r--r--    1 root     root         570 Dec  9 13:07 id_rsa.pub
@@ -41,7 +41,7 @@ drwx------    5 root     root         160 Dec  9 13:07 .ssh/
 		keys. See sshd(8) for further details of the format of this file.
 
 ```bash
-iPad: cat ~/.ssh known_hosts
+ipad: cat ~/.ssh known_hosts
 # truncuted for redability.
 192.168.0.94 ecdsa-sha2-nistp256 AAAAE2VijZHNhLX...T+0=
 github.com,140.82.121.3 ecdsa-sha2-nistp256 AAAAE2V0U2...wockg=
@@ -49,6 +49,7 @@ github.com,140.82.121.3 ecdsa-sha2-nistp256 AAAAE2V0U2...wockg=
 ```
 ### Run an SSH Server on iOS.
 
+ipad:  
 ```bash
 apk add openssh    # install ssh and ssh server. 
 ssh-keygen -A      # create host keys (no questions asks!) 
@@ -63,19 +64,19 @@ You should now be able to ssh to your device with username root and the password
 #### On Mac:
 
 ```bash
-➜ ssh root@192.168.0.24
+mac: ssh root@192.168.0.24
 ssh: connect to host 192.168.0.24 port 22: Connection refused
 ```
 If connection refused go back to iPad and restart ssh  
 ```bash
-iPad: /usr/sbin/sshd    # start ssh server
+ipad: /usr/sbin/sshd    # start ssh server
 ```
 
 > NOTE: one can only ssh to iPad when /usr/sbin/sshd is ON on iPad. 
 
-Next try to ssh from Mac to iPad:
+Next try (ssh from Mac to iPad):
 ```bash
-➜ ssh root@192.168.0.24
+mac: ssh root@192.168.0.24
 The authenticity of host '192.168.0.24 (192.168.0.24)' can't be established.  
 ECDSA key fingerprint is SHA256:JVK7lKOF+6xoDoYGWC0L/ZG8CxY9DfUPN4An6/vqZ5s.  
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes  
@@ -85,7 +86,7 @@ Welcome to Alpine!
 ```
 > NOTE: iPad can close connection at any time.
 >       Hack to keep iPad session alife: 
->   `cat /dev/location > /dev/null &`
+>       ipad:  `cat /dev/location > /dev/null &`
 
 
 ### SSH from the same device (not tested yet)
@@ -95,18 +96,19 @@ After this, you can ssh (from iSH itself) using `ssh root@localhost -p 22000`
 
 ## PasswordLess login from iPad to Mac
 
+ipad: cd /root/.ssh
 
-iPad: /root/.ssh  
-```ssh-keygen -C 'J13'```
+```ipad: ssh-keygen -C 'ipad-2-mac'```
+
 ```
 Generating public/private rsa key pair.
-Enter file in which to save the key (/root/.ssh/id_rsa): /root/.ssh/id_rsa_j13
+Enter file in which to save the key (/root/.ssh/id_rsa): /root/.ssh/id_rsa_ipad-2-mac
 Enter passphrase (empty for no passphrase): # press Enter
 Enter same passphrase again: # press Enter
-Your identification has been saved in /root/.ssh/id_rsa_j13
-Your public key has been saved in /root/.ssh/id_rsa_j13.pub
+Your identification has been saved in /root/.ssh/id_rsa_ipad-2-mac
+Your public key has been saved in /root/.ssh/id_rsa_ipad-2-mac.pub
 The key fingerprint is:
-SHA256:7zjL/+39j28PSYj4s156+VK4tkoL6djOfJ8EXvmSo6E J13
+SHA256:7zjL/+39j28PSYj4s156+VK4tkoL6djOfJ8EXvmSo6E ipad-2-mac
 The key's randomart image is:
 +---[RSA 3072]----+
 |                 |
@@ -123,11 +125,39 @@ The key's randomart image is:
 
 #### Copy public key from iPad to Mac
 
-iPad:  
-```scp ~/.ssh/id_rsa_j13.pub januszoles@192.168.0.94:/Users/januszoles/.ssh/id_rsa_j13.pub```
+> **NOTE:*** To copy anything  or login from client to server you MUST enable `Remote Login` on Mac.
+
+## ON MAC
+
+To enable remote login for members of the admin group enter:   
+
+```sudo systemsetup -setremotelogin on```
+
+or do it from a GUI.
+
+check if it is turned on:
+`sudo systemsetup -getremotelogin`
+
+```
+Remote Login: On
+```
+
+#### Alternative way of starting and stoping ssh on Mac.
+
+start ssh  
+```sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist```
+
+stop ssh  
+```sudo launchctl unload  /System/Library/LaunchDaemons/ssh.plist``` 
+
+#### Try to copy public key from iPad to Mac
+
+ipad:  
+```scp ~/.ssh/id_rsa_ipad-2-mac.pub januszoles@192.168.0.94:/Users/januszoles/.ssh/id_rsa_ipad-2-mac.pub```
+
 ```
 Password:
-id_rsa_j13.pub                                                        100%  557    17.6KB/s   00:00    
+id_rsa_ipad-2-mac.pub                                                        100%  557    17.6KB/s   00:00    
 ```
 #### Login from iPad to Mac
 
@@ -141,31 +171,33 @@ Last login: Thu Dec 16 09:10:30 2021
 
 ```bash
  ➜ ls -Al ~/.ssh
--rw-r--r--    1 januszoles  staff   557 Dec 16 09:14 id_rsa_j13.pub
+-rw-r--r--    1 januszoles  staff   557 Dec 16 09:14 id_rsa_ipad-2-mac.pub
 -rw-r--r--    1 januszoles  staff  1692 Dec 16 00:03 known_hosts
 ```
-### Append iPad public key to authorized_keys file
 
-> NOTE: if not exist this command will create it.
+### Append iPad public key to `authorized_keys` file
+
+> NOTE: if `authorized_keys` file not exist this command will create it.
 
 ```bash
-➜ cat ~/.ssh/id_rsa_j13.pub >> ~/.ssh/authorized_keys
+cat ~/.ssh/id_rsa_ipad-2-mac.pub >> ~/.ssh/authorized_keys
 ```
 ```bash
- ➜ ls -Al ~/.ssh
+mac: ls -Al ~/.ssh
 -rw-r--r--    1 januszoles  staff   557 Dec 16 09:19 authorized_keys
--rw-r--r--    1 januszoles  staff   557 Dec 16 09:14 id_rsa_j13.pub
+-rw-r--r--    1 januszoles  staff   557 Dec 16 09:14 id_rsa_ipad-2-mac.pub
 -rw-r--r--    1 januszoles  staff  1692 Dec 16 00:03 known_hosts
 ```
 ```bash
- ➜ cat ~/.ssh/authorized_keys    # check file                                
-ssh-rsa A####...####= J13
+mac: cat ~/.ssh/authorized_keys    # check file                                
+ssh-rsa A####...####= ipad-2-mac
 ```
 ```bash
-➜ exit
+mac: exit
 Connection to 192.168.0.94 closed.
 ```
-#### On iPad 
+### On iPad 
+
 ``` bash
 # [-L]ist all private keys on iPad:
 iPad: ssh-add -L
@@ -182,13 +214,13 @@ The agent has no identities.
 ```
 ```bash
 # Add private keys to ssh-agent
-iPad: ssh-add /root/.ssh/id_rsa_j13
-Identity added: /root/.ssh/id_rsa_j13 (J13)
+iPad: ssh-add /root/.ssh/id_rsa_ipad-2-mac
+Identity added: /root/.ssh/id_rsa_ipad-2-mac (ipad-2-mac)
 ```
 
 ```bash
 iPad: ssh-add -L
-ssh-rsa A#####...####= J13
+ssh-rsa A#####...####= ipad-2-mac
 ```
 Now I can login to Mac without password. 
 
@@ -198,7 +230,7 @@ Now I can login to Mac without password.
 
 ```bash
 iPad: cat << EOF > /root/.ssh/config
-Host j13
+Host mac
     Hostname 192.168.0.94
     Port 22
     User januszoles
@@ -207,24 +239,26 @@ EOF
 
 Now I can login to my mac by typing:
 ```bash
-ssh j13
+ssh mac
 ```
 
-Next, create config on my mac (j13) so I could ssh to my ipad by typing: `ssh ipad`
+Next, create config on my **mac** so I could ssh to my ipad by typing: `ssh ipad`
 
 ### ON mac: Create public/private keys for mac-2-ipad connection
 
- mac: ~/.ssh/
-  ➜ ```ssh-keygen -C 'j13-2-ipad'```
+```mac: cd ~/.ssh/```
+ 
+ ```mac: ssh-keygen -C 'mac-2-ipad'```
+  
   ```
   Generating public/private rsa key pair.
-  Enter file in which to save the key (/Users/januszoles/.ssh/id_rsa): id_rsa_j13-2-ipad
+  Enter file in which to save the key (/Users/januszoles/.ssh/id_rsa): id_rsa_mac-2-ipad
   Enter passphrase (empty for no passphrase): 
   Enter same passphrase again: 
-  Your identification has been saved in id_rsa_j13-2-ipad.
-  Your public key has been saved in id_rsa_j13-2-ipad.pub.
+  Your identification has been saved in id_rsa_mac-2-ipad.
+  Your public key has been saved in id_rsa_mac-2-ipad.pub.
   The key fingerprint is:
-  SHA256:7gknTQ00NDr7xXnA8vAD3Zcu5yw4Ek47QMYuFk2qpyo j13-2-ipad
+  SHA256:7gknTQ00NDr7xXnA8vAD3Zcu5yw4Ek47QMYuFk2qpyo mac-2-ipad
   The key's randomart image is:
   +---[RSA 3072]----+
   |      ..=        |
@@ -243,8 +277,8 @@ Next, create config on my mac (j13) so I could ssh to my ipad by typing: `ssh ip
    ```
    -rw-r--r--  1 januszoles  staff   557B Dec 16 09:19 authorized_keys
    -rw-r--r--  1 januszoles  staff   271B Dec 19 01:21 config
-   -rw-------  1 januszoles  staff   2.5K Dec 20 23:19 id_rsa_j13-2-ipad
-   -rw-r--r--  1 januszoles  staff   564B Dec 20 23:19 id_rsa_j13-2-ipad.pub
+   -rw-------  1 januszoles  staff   2.5K Dec 20 23:19 id_rsa_mac-2-ipad
+   -rw-r--r--  1 januszoles  staff   564B Dec 20 23:19 id_rsa_mac-2-ipad.pub
    -rw-r--r--  1 januszoles  staff   1.7K Dec 16 00:03 known_hosts
    ```
 #### Edit mac:~/.ssh/config file   
@@ -254,32 +288,32 @@ Next, create config on my mac (j13) so I could ssh to my ipad by typing: `ssh ip
 Host ipad
     Hostname 192.168.0.24
     Port 22
-    IdentityFile ~/.ssh/id_rsa_j13-2-ipad
+    IdentityFile ~/.ssh/id_rsa_mac-2-ipad
     User root
 ```
 
 #### Copy public key to ipad  
 mac: ~/.ssh/  
-```scp ./id_rsa_j13-2-ipad.pub ipad:/root/.ssh/id_rsa_j13-2-ipad.pub```
+```scp ./id_rsa_mac-2-ipad.pub ipad:/root/.ssh/id_rsa_mac-2-ipad.pub```
 ```
     root@192.168.0.24's password: 
-    id_rsa_j13-2-ipad.pub                                                 100%  564    35.7KB/s   00:00
+    id_rsa_mac-2-ipad.pub                                                 100%  564    35.7KB/s   00:00
 ```
 
 ## ON IPAD
 
 ### Copy mac public key to authorized_key file
 iPad:~/.ssh#   
-```cat id_rsa_j13-2-ipad.pub >> authorized_keys```  
+```cat id_rsa_mac-2-ipad.pub >> authorized_keys```  
 
 #### ipad:/root/.ssh/config file
 
 ```bash
 # IdentityFile points to location where the privet key for mac login is.
-Host j13
+Host mac
     Hostname 192.168.0.94
     Port 22
-    IdentityFile ~/.ssh/id_rsa_j13
+    IdentityFile ~/.ssh/id_rsa_ipad-2-mac
     User januszoles
 ``` 
 
@@ -288,20 +322,12 @@ iPad:~/.ssh# ls -Al
 ```
 -rw-r--r--    1 root     root           564 Dec 20 22:40 authorized_keys
 -rw-r--r--    1 root     root           102 Dec 18 09:05 config
--rw-------    1 root     root          2590 Dec 16 07:57 id_rsa_j13
--rw-r--r--    1 root     root           564 Dec 20 22:34 id_rsa_j13-2-ipad.pub
--rw-r--r--    1 root     root           557 Dec 16 07:57 id_rsa_j13.pub
+-rw-------    1 root     root          2590 Dec 16 07:57 id_rsa_ipad-2-mac
+-rw-r--r--    1 root     root           564 Dec 20 22:34 id_rsa_mac-2-ipad.pub
+-rw-r--r--    1 root     root           557 Dec 16 07:57 id_rsa_ipad-2-mac.pub
 -rw-r--r--    1 root     root           533 Dec  9 18:21 known_hosts
 ```
-## ON MAC
 
-stop ssh  
-```sudo launchctl unload  /System/Library/LaunchDaemons/ssh.plist``` 
-
-start ssh  
-```sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist```
-
----
 ## Add SSHD to OpenRC so it starts when you open the iSH.app
 
 1. What is OpenRC?
