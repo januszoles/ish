@@ -413,3 +413,46 @@ ipad:~# `rc-status`
 ipad:~# `rc-service sshd status`
 
 	* status: started
+
+
+
+## CONFIGURE GITHUB ON IPAD iSH 
+
+```bash
+# create new private/public key pair to comunicat with github
+iPad: ssh-keygen -t ed25519 -C "my-email@example.com" -f ~/.ssh/ed25519_ipad-github
+
+# cat and copy public key to clipboard 
+# NOTE: no `pbcopy` on Alpine Linux iSH, use mouse :)
+iPad: cat ~/.ssh/ed25519_ipad-github.pub
+```
+
+Go to page `https://github.com/settings/ssh/new` and paset your ssh public key.
+
+## iPad: Append new host info to config file (to simplify login)
+
+> NOTE: `~/.ssh/config`  DOES NOT exist by default.  
+> NOTE: `~/.ssh/config`  MUST be: `-rw-------` (chmod 600)
+
+```bash
+# Check permission MUST be: `-rw-------`
+iPad: ls -Al ~/.ssh/config
+-rw-------    1 root     root           377 Mar 27 22:18 /root/.ssh/config
+
+# if different:
+iPad: chmod 600 ~/.ssh/config
+
+# Append githup info to the end of config file
+iPad: cat << EOF >> /root/.ssh/config
+Host github.com
+    IdentityFile ~/.ssh/ed25519_ipad-github
+    User januszoles
+EOF
+
+# take a look
+iPad:~# cat ~/.ssh/config
+
+# try to clone repo from github to your ipad
+ipad: git clone git@github.com:<username>/<repository>.git
+
+```
