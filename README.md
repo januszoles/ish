@@ -398,7 +398,7 @@ ipad:~# `rc-update add sshd`
 
 8. Check
 
-ipad:~# `rc-status`
+iPad:~# `rc-status`
 
 	Runlevel: sysinit
 	sshd                                     [  stopped  ]
@@ -410,7 +410,7 @@ ipad:~# `rc-status`
 
 10. Check if sshd started
 
-ipad:~# `rc-service sshd status`
+iPad:~# `rc-service sshd status`
 
 	* status: started
 
@@ -418,12 +418,105 @@ ipad:~# `rc-service sshd status`
 
 ## CONFIGURE GITHUB ON IPAD iSH 
 
-```bash
+### 1. Install git
+
+Get info
+
+```sh
+iPad:# apk info git
+
+git-2.32.0-r0 description:
+Distributed version control system
+
+git-2.32.0-r0 webpage:
+https://www.git-scm.com/
+
+git-2.32.0-r0 installed size:
+12 MiB
+```
+
+Install
+
+```sh
+iPad: apk add git
+```
+
+
+
+### 2. Configure git
+
+Setup user info used across all local repos:
+
+```sh
+$ git config --global user.name "januszoles"
+```
+
+Set an email address:
+
+```sh
+iPad:~# git config --global user.email "<my-email@example.com>"
+```
+
+Set coloring options for ease of use:
+
+```sh
+iPad:~# git config --global color.ui auto
+```
+
+Clone repo located at https://gerrit.wikimedia.org onto iPad:
+
+```
+iPad:~# git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/examples.git
+
+Sample session:
+```
+iPad:~# cd
+iPad:~# git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/examples.git
+Cloning into 'git'...
+remote: Total 1633 (delta 0), reused 1633 (delta 0)
+Receiving objects: 100% (1633/1633), 781.81 KiB | 130.00 KiB/s, done.
+Resolving deltas: 100% (1094/1094), done.
+```
+
+Check repo
+```
+iPad:~# cd git
+iPad:~/git# ls
+CODE_OF_CONDUCT.md      Gruntfile.js            i18n                    package.json
+COPYING                 README.md               includes                sql
+Example.i18n.alias.php  composer.json           modules                 tests
+Example.i18n.magic.php  extension.json          package-lock.json
+```
+Remove colned repo:
+
+```sh
+iPad:~/git# cd
+iPad:~# rm -rf ./git
+```
+
+Print git config:
+```sh
+iPad:~# git config -l
+```
+```
+user.email=my-email@example.com
+user.name=januszoles
+init.defaultbranch=main
+color.ui=auto
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+```
+
+### Create ssh keys for Github
+
+```sh
 # create new private/public key pair to comunicat with github
 iPad: ssh-keygen -t ed25519 -C "my-email@example.com" -f ~/.ssh/ed25519_ipad-github
 
 # cat and copy public key to clipboard 
-# NOTE: no `pbcopy` on Alpine Linux iSH, use mouse :)
+# NOTE: no `pbcopy` on Alpine Linux iSH, use mouse or finger :)
 iPad: cat ~/.ssh/ed25519_ipad-github.pub
 ```
 
@@ -434,25 +527,37 @@ Go to page `https://github.com/settings/ssh/new` and paset your ssh public key.
 > NOTE: `~/.ssh/config`  DOES NOT exist by default.  
 > NOTE: `~/.ssh/config`  MUST be: `-rw-------` (chmod 600)
 
-```bash
+```sh
 # Check permission MUST be: `-rw-------`
-iPad: ls -Al ~/.ssh/config
+iPad:~# ls -Al ~/.ssh/config
 -rw-------    1 root     root           377 Mar 27 22:18 /root/.ssh/config
+```
 
+```sh
 # if different:
-iPad: chmod 600 ~/.ssh/config
+iPad:~# chmod 600 ~/.ssh/config
+```
 
-# Append githup info to the end of config file
-iPad: cat << EOF >> /root/.ssh/config
+
+Append GitHub info to the end of config file:
+
+```sh
+iPad:~# cat << EOF >> /root/.ssh/config
 Host github.com
     IdentityFile ~/.ssh/ed25519_ipad-github
     User januszoles
 EOF
-
-# take a look
-iPad:~# cat ~/.ssh/config
-
-# try to clone repo from github to your ipad
-ipad: git clone git@github.com:<username>/<repository>.git
-
 ```
+
+Take a look:
+
+```sh
+iPad:~# cat ~/.ssh/config
+```
+
+Try to clone repo from github to your ipad using SSH:
+
+```sh
+iPad:~# git clone git@github.com:<username>/<repository>.git
+```
+
