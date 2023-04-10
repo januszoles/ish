@@ -1,58 +1,66 @@
-# iSH
+# iSH 
 
 ## My notes about iSH.app and SSH configuration on iPad and Mac
-
-
-
-wright to README.md from cli using sed.
-iPad: `sed -i '18i \\n## Install glow - md viewer\napk add glow' README.md` 
 
 ## SSH Configuration
 
 > Note:  
- 	Mac Prompt:      `mac:`    
-	iPad prompt:     `ipad:`     
+	Mac Prompt:      `mac:`  
+	iPad prompt:     `ipad:`  
 
 ### Intro, Basics from MAN Pages
 
-	~/.ssh/
-		default location for all user-specific
-		configuration and authentication information.  
-		permissions are r/w/x for user, none for otheres
-```txt	
+```txt
+~/.ssh/
+    default location for all user-specific
+    configuration and authentication information.  
+    permissions are r/w/x for user, none for otheres
+```
+
+```txt
 drwx------    5 root     root         160 Dec  9 13:07 .ssh/
 ```
-	~/.ssh/id_rsa
-		Contains the private key for authentication.  
-		Should be readable by the user but not
-		accessible by others.   
-		!!! ssh will IGNORE a private key file if it is accessible by others.	
+
+```txt
+~/.ssh/id_rsa
+    Contains the private key for authentication.  
+    Should be readable by the user but not
+    accessible by others.   
+    !!! ssh will IGNORE a private key file if 
+    it is accessible by others.
+```
 
 ```txt
 -rw-------    1 root     root        2.5K Dec  9 13:07 id_rsa
 -rw-r--r--    1 root     root         570 Dec  9 13:07 id_rsa.pub
 -rw-r--r--    1 root     root         533 Dec  9 18:21 known_hosts
 ```
-	~/.ssh/id_rsa.pub
-		Contains the public key for authentication.  These files are not
-		sensitive and can (but need not) be readable by anyone.
 
-	~/.ssh/known_hosts
-		Contains a list of host keys for all hosts the user has logged
-		into that are not already in the systemwide list of known host
-		keys. See sshd(8) for further details of the format of this file.
+```txt
+~/.ssh/id_rsa.pub
+    Contains the public key for authentication.  
+    These files are not sensitive and can (but need not) be 
+    readable by anyone.
 
-ipad:
+~/.ssh/known_hosts
+  Contains a list of host keys for all hosts the user has logged
+  into that are not already in the systemwide list of known host
+  keys. See sshd(8) for further details of the format of this file.
+```
+
+ipad: `cat ~/.ssh known_hosts`
+
 ```sh
-cat ~/.ssh known_hosts
 # truncuted for redability.
 192.168.0.94 ecdsa-sha2-nistp256 AAAAE2VijZHNhLX...T+0=
 github.com,140.82.121.3 ecdsa-sha2-nistp256 AAAAE2V0U2...wockg=
 140.82.121.4 ecdsa-sha2-nistp256 AAAAE2VjTY.../++Tpockg=
 ```
-### Run an SSH Server on iOS.
 
-ipad:  
+### Run an SSH Server on iOS
+
+ipad:
+
 ```sh
 apk add openssh    # install ssh and ssh server. 
 ssh-keygen -A      # create host keys (no questions asks!) 
@@ -60,32 +68,28 @@ passwd             # set a password for root to protect your iOS device
 echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config  # modified config for root login. 
 /usr/sbin/sshd     # start ssh daemon
 ```
+
 You should now be able to ssh to your device with username root and the password you typed.
 
 #### First Time ssh from Mac to iPad:
 
-#### On Mac:
-
-
 mac: `ssh root@192.168.0.24`
 
-```
+```output
 ssh: connect to host 192.168.0.24 port 22: Connection refused
 ```
 
-If connection refused go back to iPad and restart ssh  
+> If connection refused, go back to iPad and restart ssh  
 
 ipad: `/usr/sbin/sshd    # start ssh server`
-
 
 > NOTE: one can only ssh to iPad when /usr/sbin/sshd is ON on iPad. 
 
 Next try (ssh from Mac to iPad):
 
-
 mac: `ssh root@192.168.0.24`
 
-```
+```output
 The authenticity of host '192.168.0.24 (192.168.0.24)' can't be established.  
 ECDSA key fingerprint is SHA256:JVK7lKOF+6xoDoYGWC0L/ZG8CxY9DfUPN4An6/vqZ5s.  
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes  
@@ -94,10 +98,9 @@ root@192.168.0.24's password:  # type root password
 Welcome to Alpine!  
 ```
 
-> NOTE: iPad can close connection at any time.
->       Hack to keep iPad session alife: 
+> NOTE: iPad can close connection at any time.  
+>       Hack to keep iPad session alife:  
 >       ipad:  `cat /dev/location > /dev/null &`
-
 
 ### SSH from the same device (not tested yet)
 
@@ -111,7 +114,7 @@ ipad: `cd /root/.ssh`
 
 ipad: `ssh-keygen -C 'ipad-2-mac'`
 
-```
+```output
 Generating public/private rsa key pair.
 Enter file in which to save the key (/root/.ssh/id_rsa): /root/.ssh/id_rsa_ipad-2-mac
 Enter passphrase (empty for no passphrase): # press Enter
@@ -134,14 +137,13 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-#### Copy public key from iPad to Mac
+### Copy public key from iPad to Mac
 
-> **NOTE:*** To copy anything or to login from client to server you MUST enable `Remote Login` on Mac.
-
+> **NOTE:** To copy anything or to login from client to server you MUST enable `Remote Login` on Mac.
 
 ## ON MAC
 
-To enable remote login for members of the admin group enter:   
+To enable remote login for members of the admin group enter:
 
 mac: `sudo systemsetup -setremotelogin on`
 
@@ -151,11 +153,11 @@ check if it is turned on:
 
 mac: `sudo systemsetup -getremotelogin`
 
-```
+```output
 Remote Login: On
 ```
 
-#### Alternative way of starting and stoping ssh on Mac.
+### Alternative Way of Starting and Stoping ssh on Mac
 
 start ssh
   
@@ -165,27 +167,25 @@ stop ssh
 
 mac: `sudo launchctl unload  /System/Library/LaunchDaemons/ssh.plist` 
 
-
-#### Try to copy public key from iPad to Mac
+### Try to copy public key from iPad to Mac
 
 ipad: `scp ~/.ssh/id_rsa_ipad-2-mac.pub januszoles@192.168.0.94:/Users/januszoles/.ssh/id_rsa_ipad-2-mac.pub`  
 
-```
+```output
 Password:
 id_rsa_ipad-2-mac.pub                                                        100%  557    17.6KB/s   00:00    
 ```
 
-#### Login from iPad to Mac
+### Login from iPad to Mac
 
 ipad:  `ssh januszoles@192.168.0.94`
 
-```
+```output
 Password:
 Last login: Thu Dec 16 09:10:30 2021
 ```
 
 #### After succesfull login to Mac
-
 
 ```sh
  ➜ ls -Al ~/.ssh
@@ -195,72 +195,79 @@ Last login: Thu Dec 16 09:10:30 2021
 
 ### Append iPad public key to `authorized_keys` file
 
-> NOTE: if `authorized_keys` file not exist this command will create it.
+> **NOTE:** if `authorized_keys` file NOT exist this command will create it.
 
 ```sh
 cat ~/.ssh/id_rsa_ipad-2-mac.pub >> ~/.ssh/authorized_keys
 ```
 
-
 mac: `ls -Al ~/.ssh`
 
-```
+```output
 -rw-r--r--    1 januszoles  staff   557 Dec 16 09:19 authorized_keys
 -rw-r--r--    1 januszoles  staff   557 Dec 16 09:14 id_rsa_ipad-2-mac.pub
 -rw-r--r--    1 januszoles  staff  1692 Dec 16 00:03 known_hosts
 ```
 
+mac: `cat ~/.ssh/authorized_keys    # check file`
 
-mac: `cat ~/.ssh/authorized_keys    # check file`                                
-
-```
+```output
 ssh-rsa A####...####= ipad-2-mac
 ```
 
 mac: `exit`
 
-```
+```output
 Connection to 192.168.0.94 closed.
 ```
 
-### On iPad 
+### On iPad
 
+#### Adds Private Key to the Authentication Agent
 
-[-L]ist all private keys on iPad:
+> **NOTE:**   
+> **ssh-add** -- adds private key identities to the authentication agent 
 
-iPad: `ssh-add -L`
+```txt
+-L    Lists public key parameters of all identities currently  
+      represented by the agent.
 ```
+
+ipad: `ssh-add -L`
+
+```output
 Could not open a connection to your authentication agent.
 ```
 
 Starts ssh-agent for shell use.
 
-iPad: `eval `ssh-agent -s``  
+ipad:
+
+```sh
+eval `ssh-agent -s`  
+```
 ```
 Agent pid 54
 ```
 
 
-iPad: `ssh-add -L`
+ipad: `ssh-add -L`
 
-```
+```output
 The agent has no identities.
 ```
 
-
-
 Add private keys to ssh-agent
 
-iPad: `ssh-add /root/.ssh/id_rsa_ipad-2-mac`
+ipad: `ssh-add /root/.ssh/id_rsa_ipad-2-mac`
 
-```
+```output
 Identity added: /root/.ssh/id_rsa_ipad-2-mac (ipad-2-mac)
 ```
 
+ipad: `ssh-add -L`
 
-iPad: `ssh-add -L`
-
-```
+```output
 ssh-rsa A#####...####= ipad-2-mac
 ```
 
@@ -291,7 +298,7 @@ Next, create config on my **mac** so I could ssh to my ipad by typing: `ssh ipad
 ### ON mac: Create public/private keys for mac-2-ipad connection
 
 mac: `cd ~/.ssh/`
- 
+
 mac: `ssh-keygen -C 'mac-2-ipad'`
   
 ```txt
@@ -317,8 +324,9 @@ mac: `ssh-keygen -C 'mac-2-ipad'`
   +----[SHA256]-----+
 ```
 
-  mac:  `ls -Al ~/.ssh` 
-```
+mac:  `ls -Al ~/.ssh`
+
+```output
    -rw-r--r--  1 januszoles  staff   557B Dec 16 09:19 authorized_keys
    -rw-r--r--  1 januszoles  staff   271B Dec 19 01:21 config
    -rw-------  1 januszoles  staff   2.5K Dec 20 23:19 id_rsa_mac-2-ipad
@@ -326,12 +334,13 @@ mac: `ssh-keygen -C 'mac-2-ipad'`
    -rw-r--r--  1 januszoles  staff   1.7K Dec 16 00:03 known_hosts
 ```
 
-#### Edit mac:~/.ssh/config file   
+#### Edit mac:~/.ssh/config file
 
 mac: `vim ~/.ssh/confg`
 
 add this to config:
-```
+
+```txt
 Host ipad
     Hostname 192.168.0.24
     Port 22
@@ -339,12 +348,13 @@ Host ipad
     User root
 ```
 
-#### Copy public key to ipad  
+#### Copy public key to ipad
+
 mac: `cd ~/.ssh/`  
 
 mac: `scp ./id_rsa_mac-2-ipad.pub ipad:/root/.ssh/id_rsa_mac-2-ipad.pub`
 
-```
+```output
     root@192.168.0.24's password: 
     id_rsa_mac-2-ipad.pub                                                 100%  564    35.7KB/s   00:00
 ```
@@ -352,9 +362,12 @@ mac: `scp ./id_rsa_mac-2-ipad.pub ipad:/root/.ssh/id_rsa_mac-2-ipad.pub`
 ## ON IPAD
 
 ### Copy mac public key to authorized_key file
-ipad:~/.ssh#   
 
-```cat id_rsa_mac-2-ipad.pub >> authorized_keys```  
+ipad:
+
+```sh 
+cat ~/.ssh id_rsa_mac-2-ipad.pub >> authorized_keys
+```  
 
 #### ipad:/root/.ssh/config file
 
@@ -384,41 +397,50 @@ ipad:~/.ssh# `ls -Al`
 
 ipad: `apk info openrc`
 
-	openrc-0.43.3-r2 description:
-	OpenRC manages the services, startup and shutdown of a host
+```output
+openrc-0.43.3-r2 description:
+OpenRC manages the services, startup and shutdown of a host
 
-	openrc-0.43.3-r2 webpage:
-	https://github.com/OpenRC/openrc
+openrc-0.43.3-r2 webpage:
+https://github.com/OpenRC/openrc
 
-	openrc-0.43.3-r2 installed size:
-	2528 KiB
+openrc-0.43.3-r2 installed size:
+2528 KiB
+```
 
-
-2. Try if rc-update is installed. 
+2. Try if rc-update is installed.
 
 ipad: `rc-update`
 
-	-ash: rc-update: not found
-
+```output
+-ash: rc-update: not found
+```
 
 3. Install
 
 ipad: `apk add openrc`
 
+4. Edit  `/etc/inittab`
 
-4. Edit  `/etc/inittab` 
-
-ipad: `vim /etc/inittab` 
+ipad: `vi /etc/inittab`
 
 find:
-```
+
+```txt
+# /etc/inittab
+
 ::sysinit:/sbin/openrc sysinit
 ```
+
 change to:
-```
+
+```txt
+# /etc/inittab
+
 ::sysinit:/sbin/openrc
 ```
-```
+
+```txt
 # /etc/inittab
 
 ::sysinit:/sbin/openrc
@@ -435,18 +457,22 @@ ipad: `exit`
 
 06. Check status
 
-ipad: `rc-status` 	 
+ipad: `rc-status`
 
-    Runlevel: sysinit. 
-    Dynamic Runlevel: hotplugged  
-    Dynamic Runlevel: needed/wanted  
-    Dynamic Runlevel: manual  
+```
+Runlevel: sysinit. 
+Dynamic Runlevel: hotplugged  
+Dynamic Runlevel: needed/wanted  
+Dynamic Runlevel: manual  
+```
 
-7. Add sshd to sysinit 
+7. Add sshd to sysinit
 
 ipad: `rc-update add sshd`  
 
+```
 	* service sshd added to runlevel sysinit
+```
 
 8. Check
 
@@ -468,7 +494,7 @@ ipad: `rc-service sshd status`
 
 
 
-## CONFIGURE GITHUB ON IPAD iSH 
+## CONFIGURE GITHUB ON IPAD iSH
 
 ### 1. Install git
 
@@ -476,7 +502,7 @@ Get info
 
 ipad: `apk info git`
 
-```
+```output
 git-2.32.0-r0 description:
 Distributed version control system
 
@@ -516,11 +542,12 @@ ipad: `cd`
 
 ipad: `git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/examples.git`
 
-    Cloning into 'git'...
-    remote: Total 1633 (delta 0), reused 1633 (delta 0)
-    Receiving objects: 100% (1633/1633), 781.81 KiB | 130.00 KiB/s, done.
-    Resolving deltas: 100% (1094/1094), done.
-
+```output
+Cloning into 'git'...
+remote: Total 1633 (delta 0), reused 1633 (delta 0)
+Receiving objects: 100% (1633/1633), 781.81 KiB | 130.00 KiB/s, done.
+Resolving deltas: 100% (1094/1094), done.
+```
 
 Check repo
 
@@ -528,15 +555,14 @@ ipad: `cd git`
 
 ipad: `ls`
 
-```
+```output
 CODE_OF_CONDUCT.md      Gruntfile.js            i18n                    package.json
 COPYING                 README.md               includes                sql
 Example.i18n.alias.php  composer.json           modules                 tests
 Example.i18n.magic.php  extension.json          package-lock.json
 ```
 
-Remove colned repo:
-
+Remove cloned repo:
 
 ipad: `cd`
 
@@ -546,7 +572,7 @@ Print git config:
 
 ipad: `git config -l`
 
-```
+```output
 user.email=my-email@example.com
 user.name=januszoles
 init.defaultbranch=main
@@ -559,30 +585,32 @@ core.logallrefupdates=true
 
 ### Create ssh keys for Github
 
-
 create new private/public key pair to comunicat with github
 
-ipad: `ssh-keygen -t ed25519 -C "my-email@example.com" -f ~/.ssh/ed25519_ipad-github`
+ipad:
 
-cat and copy public key to clipboard 
+```sh
+ssh-keygen -t ed25519 -C "my-email@example.com" -f ~/.ssh/ed25519_ipad-github
+```
 
-# NOTE: no `pbcopy` on Alpine Linux iSH, use mouse or finger :)
+cat and copy public key to clipboard
+
+> **NOTE:** no `pbcopy` on Alpine Linux iSH, use mouse or finger :)
 
 ipad: `cat ~/.ssh/ed25519_ipad-github.pub`
 
-Go to page `https://github.com/settings/ssh/new` and paset your ssh public key.
+Go to page `https://github.com/settings/ssh/new` and paste your ssh public key.
 
 ## ipad: Append new host info to config file (to simplify login)
 
 > NOTE: `~/.ssh/config`  DOES NOT exist by default.  
 > NOTE: `~/.ssh/config`  MUST be: `-rw-------` (chmod 600)
 
-
-#### Check permission MUST be: `-rw-------`
+### Check permission MUST be: `-rw-------`
 
 ipad: `ls -Al ~/.ssh/config`
 
-```
+```output
 -rw-------    1 root     root           377 Mar 27 22:18 /root/.ssh/config
 ```
 
@@ -592,7 +620,7 @@ ipad: `chmod 600 ~/.ssh/config`
 
 Append GitHub info to the end of config file:
 
-ipad: 
+ipad:
 
 ```sh
 cat << EOF >> /root/.ssh/config
@@ -606,9 +634,6 @@ Take a look:
 
 ipad: `cat ~/.ssh/config`
 
-
 Try to clone repo from github to your ipad using SSH:
 
 ipad: `git clone git@github.com:<username>/<repository>.git`
-
-
