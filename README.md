@@ -1,6 +1,6 @@
 # iSH 
 
-- [Welcome to Alpine on iPhone 6! (2023-04-12)] (#iphone6)
+- [Welcome to Alpine on iPhone 6! (2023-04-12)](#iphone6)
 
 ## My notes about iSH.app and SSH configuration on iPad and Mac
 
@@ -640,9 +640,12 @@ Try to clone repo from github to your ipad using SSH:
 
 ipad: `git clone git@github.com:<username>/<repository>.git`
 
+
 ***
 
-# Welcome to Alpine on iPhone 6! (2023-04-12) <a name="iphone6"/>
+<div id='iphone6'/>
+
+# Welcome to Alpine on iPhone 6! (2023-04-12)
 
 ## History of Installation and Configuration of iSH Alpine Linux on my old iPhone 6 running iOS 12.5.7.
 No external keyboard was available.
