@@ -1,5 +1,7 @@
 # iSH 
 
+- [Welcome to Alpine on iPhone 6! (2023-04-12)] (#iphone6)
+
 ## My notes about iSH.app and SSH configuration on iPad and Mac
 
 ## SSH Configuration
@@ -637,3 +639,764 @@ ipad: `cat ~/.ssh/config`
 Try to clone repo from github to your ipad using SSH:
 
 ipad: `git clone git@github.com:<username>/<repository>.git`
+
+***
+
+# Welcome to Alpine on iPhone 6! (2023-04-12) <a name="iphone6"/>
+
+## History of Installation and Configuration of iSH Alpine Linux on my old iPhone 6 running iOS 12.5.7.
+No external keyboard was available.
+The Apple external Bluetooth keyboard A1314 was not listed as a device on my iPhone 6.
+
+The idea was to install and configure SSH and some other tools, so that I could log in to my iPhone from my iPad via SSH and have the possibility to use an external keyboard or from my Mac.
+This was just to learn a little bit more about SSH and Git.
+
+Here are the step-by-step instructions, including the wrong steps that were taken.
+```
+Welcome to Alpine!
+
+You can install packages with: apk add <package>
+
+You may change this message by editing /etc/motd.
+
+iPhone6:~#
+```
+
+What do I have here?
+```
+iPhone6:~# apk info
+WARNING: Ignoring https://dl-cdn.alpinelinux.org/alpine/v3.14/main: No such file or directory
+WARNING: Ignoring https://dl-cdn.alpinelinux.org/alpine/v3.14/community: No such file or directory
+musl
+busybox
+alpine-baselayout
+alpine-keys
+libcrypto1.1
+libssl1.1
+ca-certificates-bundle
+libretls
+ssl_client
+zlib
+apk-tools
+scanelf
+musl-utils
+libc-utils
+```
+
+First things first!
+```
+iPhone6:~# apk update
+fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/main/x86/APKINDEX.tar.gz
+fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86/APKINDEX.tar.gz
+v3.14.10-12-gbc9180e8f5c [https://dl-cdn.alpinelinux.org/alpine/v3.14/main]
+v3.14.10-11-gbe90e547195 [https://dl-cdn.alpinelinux.org/alpine/v3.14/community]
+OK: 14630 distinct packages available
+```
+
+```
+iPhone6:~# apk upgrade
+(1/9) Upgrading musl (1.2.2-r3 -> 1.2.2-r4)
+(2/9) Upgrading busybox (1.33.1-r6 -> 1.33.1-r8)
+Executing busybox-1.33.1-r8.post-upgrade
+(3/9) Upgrading libcrypto1.1 (1.1.1l-r0 -> 1.1.1t-r2)
+(4/9) Upgrading libssl1.1 (1.1.1l-r0 -> 1.1.1t-r2)
+(5/9) Upgrading ca-certificates-bundle (20191127-r5 -> 20220614-r0)
+(6/9) Upgrading libretls (3.3.3p1-r2 -> 3.3.3p1-r3)
+(7/9) Upgrading ssl_client (1.33.1-r6 -> 1.33.1-r8)
+(8/9) Upgrading zlib (1.2.11-r3 -> 1.2.12-r3)
+(9/9) Upgrading musl-utils (1.2.2-r3 -> 1.2.2-r4)
+Executing busybox-1.33.1-r8.trigger
+Executing ca-certificates-20220614-r0.trigger
+OK: 41 MiB in 34 packages
+```
+
+Trying to add man pages by try and error 
+```
+iPhone6:~# apk add man
+fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/main/x86/APKINDEX.tar.gz
+fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86/APKINDEX.tar.gz
+ERROR: unable to select packages:
+  man (no such package):
+    required by: world[man]
+```    
+
+```
+iPhone6:~# apk add man-pages
+(1/1) Installing man-pages (5.11-r0)
+OK: 22 MiB in 15 packages
+```
+
+```
+iPhone6:~# apk add mandoc
+(1/1) Installing mandoc (1.14.5-r5)
+Executing busybox-1.33.1-r6.trigger
+OK: 22 MiB in 16 packages
+iPhone6:~# mam man
+-ash: mam: not found
+```
+
+```
+iPhone6:~# apk add mandoc-apropos less less-doc
+(1/5) Installing ncurses-terminfo-base (6.2_p20210612-r1)
+(2/5) Installing ncurses-libs (6.2_p20210612-r1)
+(3/5) Installing less (581-r2)
+(4/5) Installing less-doc (581-r2)
+(5/5) Installing mandoc-apropos (1.14.5-r5)
+Executing busybox-1.33.1-r6.trigger
+Executing mandoc-apropos-1.14.5-r5.trigger
+OK: 23 MiB in 21 packages
+```
+
+Finally
+```
+iPhone6:~# man ls
+```
+
+Add rsync just in case
+```
+iPhone6:~# apk add rsync rsync-doc
+(1/5) Installing libacl (2.2.53-r0)
+(2/5) Installing popt (1.18-r0)
+(3/5) Installing zstd-libs (1.4.9-r1)
+(4/5) Installing rsync (3.2.5-r0)
+(5/5) Installing rsync-doc (3.2.5-r0)
+Executing busybox-1.33.1-r6.trigger
+Executing mandoc-apropos-1.14.5-r5.trigger
+OK: 24 MiB in 26 packages
+```
+
+Add git
+```
+iPhone6:~# apk info git
+git-2.32.6-r0 description:
+Distributed version control system
+
+git-2.32.6-r0 webpage:
+https://www.git-scm.com/
+
+git-2.32.6-r0 installed size:
+12 MiB
+```
+
+How to search just for an app name
+```
+iPhone6:~# apk -e search git
+git-2.32.6-r0
+```
+
+```
+iPhone6:~# apk add git
+(1/7) Installing ca-certificates (20220614-r0)
+(2/7) Installing brotli-libs (1.0.9-r5)
+(3/7) Installing nghttp2-libs (1.43.0-r0)
+(4/7) Installing libcurl (7.79.1-r5)
+(5/7) Installing expat (2.5.0-r0)
+(6/7) Installing pcre2 (10.36-r1)
+(7/7) Installing git (2.32.6-r0)
+100% ███████████████████████████████████████████Executing ca-certificates-20220614-r0.trigger
+OK: 40 MiB in 33 packages
+```
+
+```
+iPhone6:~# man git
+man: No entry for git in the manual.
+```
+
+```
+iPhone6:~# apk search git | grep doc
+lazygit-doc-0.28.2-r2
+git-interactive-rebase-tool-doc-2.1.0-r0
+cgit-doc-1.2.3-r0
+git-flow-doc-1.12.3-r0
+git-crypt-doc-0.6.0-r1
+gitg-doc-3.32.1-r6
+git-review-doc-1.28.0-r5
+git-doc-2.32.6-r0          # <——————— that’s the one
+git-lfs-doc-2.13.1-r1
+github-cli-doc-2.1.0-r1
+stagit-doc-0.9.6-r0
+git-subtree-doc-2.32.6-r0
+```
+
+```
+iPhone6:~# apk add git-doc
+(1/1) Installing git-doc (2.32.6-r0)
+Executing mandoc-apropos-1.14.5-r5.trigger
+OK: 41 MiB in 34 packages
+```
+
+iPhone6:~# man git
+```
+GIT(1)             Git Manual             GIT(1)
+
+
+
+ 
+
+NAME
+   git - the stupid content tracker
+
+SYNOPSIS
+   git [--version] [--help] [-C <path>] [-c <name>=<value>]
+       [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+       [-p|--paginate|-P|--no-pager] [--no-replace-objects] [--bare]
+       [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+       [--super-prefix=<path>] [--config-env=<name>=<envvar>]
+       <command> [<args>]
+```
+
+```
+iPhone:~# git --help
+usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           [--super-prefix=<path>] [--config-env=<name>=<envvar>]
+           <command> [<args>]
+
+These are common Git commands used in various situations:
+
+start a working area (see also: git help tutorial)
+   clone             Clone a repository into a new directory
+   init              Create an empty Git repository or reinitialize an existing one
+
+work on the current change (see also: git help everyday)
+   add               Add file contents to the index
+   mv                Move or rename a file, a directory, or a symlink
+   restore           Restore working tree files
+   rm                Remove files from the working tree and from the index
+   sparse-checkout   Initialize and modify the sparse-checkout 
+
+examine the history and state (see also: git help revisions)
+   bisect            Use binary search to find the commit that introduced a bug
+   diff              Show changes between commits, commit and working tree, etc
+   grep              Print lines matching a pattern
+   log               Show commit logs
+   show              Show various types of objects
+   status            Show the working tree status
+
+grow, mark and tweak your common history
+   branch            List, create, or delete branches
+   commit            Record changes to the repository
+   merge             Join two or more development histories together
+   rebase            Reapply commits on top of another base tip
+   reset             Reset current HEAD to the specified state
+   switch            Switch branches
+   tag               Create, list, delete or verify a tag object signed with GPG
+
+collaborate (see also: git help workflows)
+   fetch             Download objects and refs from another repository
+   pull              Fetch from and integrate with another repository or a local branch
+   push              Update remote refs along with associated objects
+
+'git help -a' and 'git help -g' list available subcommands and some
+concept guides. See 'git help <command>' or 'git help <concept>'
+to read about a specific subcommand or concept.
+See 'git help git' for an overview of the system.
+```
+
+I don’t remember what I did but it listed all commands, so I keep them here just for reference.
+
+```
+.                       man
+:                       mandoc
+[                       md5sum
+[[                      mdev
+acpid                   mesg
+add-shell               microcom
+addgroup                mkdir
+adduser                 mkdosfs
+adjtimex                mkfifo
+alias                   mkfs.vfat
+apk                     mkmntdirs
+apropos                 mknod
+arch                    mkpasswd
+arp                     mkswap
+arping                  mktemp
+ash                     modinfo
+awk                     modprobe
+base64                  more
+basename                mount
+bbconfig                mountpoint
+bc                      mpstat
+beep                    mv
+bg                      nameif
+blkdiscard              nanddump
+blkid                   nandwrite
+blockdev                nbd-client
+brctl                   nc
+break                   netstat
+bunzip2                 nice
+busybox                 nl
+bzcat                   nmeter
+bzip2                   nohup
+c_rehash                nologin
+cal                     nproc
+cat                     nsenter
+cd                      nslookup
+chdir                   ntpd
+chgrp                   od
+chmod                   openvt
+chown                   partprobe
+chpasswd                passwd
+chroot                  paste
+chvt                    pgrep
+cksum                   pidof
+clear                   ping
+cmp                     ping6
+comm                    pipe_progress
+command                 pivot_root
+continue                pkill
+cp                      pmap
+cpio                    poweroff
+crond                   printenv
+crontab                 printf
+cryptpw                 ps
+cut                     pscan
+date                    pstree
+dc                      pwd
+dd                      pwdx
+deallocvt               raidautorun
+delgroup                rdate
+deluser                 rdev
+demandoc                read
+depmod                  readahead
+df                      readlink
+diff                    readonly
+dirname                 realpath
+dmesg                   reboot
+dnsdomainname           reformime
+dos2unix                remove-shell
+du                      renice
+dumpkmap                reset
+echo                    resize
+ed                      return
+egrep                   rev
+eject                   rfkill
+env                     rm
+ether-wake              rmdir
+eval                    rmmod
+exec                    route
+exit                    rsync
+expand                  rsync-ssl
+export                  run-parts
+expr                    scanelf
+factor                  sed
+fallocate               sendmail
+false                   seq
+fatattr                 set
+fbset                   setconsole
+fbsplash                setfont
+fdflush                 setkeycodes
+fdisk                   setlogcons
+fg                      setpriv
+fgrep                   setserial
+find                    setsid
+findfs                  sh
+flock                   sha1sum
+fold                    sha256sum
+free                    sha3sum
+fsck                    sha512sum
+fstrim                  shift
+fsync                   showkey
+fuser                   shred
+getconf                 shuf
+getent                  slattach
+getopt                  sleep
+getopts                 sort
+getty                   source
+git                     split
+git-receive-pack        ssl_client
+git-shell               stat
+git-upload-archive      strings
+git-upload-pack         stty
+grep                    su
+groups                  sum
+gunzip                  swapoff
+gzip                    swapon
+halt                    switch_root
+hash                    sync
+hd                      sysctl
+head                    syslogd
+help                    tac
+hexdump                 tail
+history                 tar
+hostid                  tee
+hostname                test
+hwclock                 time
+iconv                   timeout
+id                      times
+ifconfig                top
+ifdown                  touch
+ifenslave               tr
+ifup                    traceroute
+init                    traceroute6
+inotifyd                trap
+insmod                  true
+install                 truncate
+ionice                  tty
+iostat                  ttysize
+ip                      tunctl
+ipaddr                  type
+ipcalc                  udhcpc
+ipcrm                   udhcpc6
+ipcs                    ulimit
+iplink                  umask
+ipneigh                 umount
+iproute                 unalias
+iprule                  uname
+iptunnel                unexpand
+jobs                    uniq
+kbd_mode                unix2dos
+kill                    unlink
+killall                 unlzma
+killall5                unlzop
+klogd                   unset
+ldconfig                unshare
+ldd                     unxz
+less                    unzip
+lessecho                update-ca-certificates
+lesskey                 uptime
+let                     usleep
+link                    uudecode
+linux32                 uuencode
+linux64                 vconfig
+ln                      vi
+loadfont                vlock
+loadkmap                volname
+local                   wait
+logger                  watch
+login                   watchdog
+logread                 wc
+losetup                 wget
+ls                      whatis
+lsmod                   which
+lsof                    whoami
+lsusb                   whois
+lzcat                   xargs
+lzma                    xmlwf
+lzop                    xxd
+lzopcat                 xzcat
+makemime                yes
+makewhatis              zcat
+```
+
+
+Just checking, is it possible to install neovim on old iPhone6
+```
+iPhone6:~# apk search -e neovim
+neovim-0.4.4-r1
+
+```
+
+Yes, it is.
+```
+iPhone6:~# apk add neovim
+(1/10) Installing libintl (0.21-r0)
+(2/10) Installing libgcc (10.3.1_git20210424-r2)
+(3/10) Installing luajit (2.1_p20210510-r0)
+(4/10) Installing libuv (1.41.0-r0)
+(5/10) Installing libluv (1.36.0.0-r3)
+(6/10) Installing msgpack-c (3.3.0-r0)
+(7/10) Installing unibilium (2.1.0-r0)
+(8/10) Installing libtermkey (0.22-r0)
+(9/10) Installing libvterm (0.1.20190920-r1)
+(10/10) Installing neovim (0.4.4-r1)
+Executing busybox-1.33.1-r8.trigger
+OK: 59 MiB in 44 packages
+```
+
+Install and config ssh
+```
+iPhone6:~# apk add openssh
+(1/8) Installing openssh-keygen (8.6_p1-r3)
+(2/8) Installing libedit (20210216.3.1-r0)
+(3/8) Installing openssh-client-common (8.6_p1-r3)
+(4/8) Installing openssh-client-default (8.6_p1-r3)
+(5/8) Installing openssh-sftp-server (8.6_p1-r3)
+(6/8) Installing openssh-server-common (8.6_p1-r3)
+(7/8) Installing openssh-server (8.6_p1-r3)
+(8/8) Installing openssh (8.6_p1-r3)
+Executing busybox-1.33.1-r8.trigger
+OK: 65 MiB in 52 packages
+```
+
+```
+iPhone6:~# rc-update add sshd
+-ash: rc-update: not found
+```
+
+```
+iPhone6:~# apk add openrc
+(1/3) Installing ifupdown-ng (0.11.3-r0)
+(2/3) Installing openrc (0.43.3-r3)
+Executing openrc-0.43.3-r3.post-install
+(3/3) Installing rsync-openrc (3.2.5-r0)
+100% ███████████████████████████████████████████OK: 68 MiB in 55 packages
+K: 68 MiB in 55 packages
+```
+
+```
+iPhone6:~# rc-update add sshd
+ * service sshd added to runlevel sysinit
+```
+
+```
+iPhone6:~# service sshd start
+ * WARNING: sshd is already starting
+```
+
+```
+iPhone6:~# passwd
+Changing password for root
+New password: 
+Retype password: 
+passwd: password for root changed by root
+```
+
+```
+iPhone6:~# echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+```
+
+```
+iPhone6:~# tail -2 /etc/ssh/sshd_config
+#       ForceCommand cvs server
+PermitRootLogin yes
+```
+
+```bash
+iPhone6:~# rc-status
+ * Caching service dependencies ...
+Service `hwdrivers' needs non existent service `dev'
+Service `machine-id' needs non existent service `dev'                                       [ ok ]
+Runlevel: sysinit
+ sshd                               [  stopped  ]
+Dynamic Runlevel: hotplugged
+Dynamic Runlevel: needed/wanted
+Dynamic Runlevel: manual
+```
+
+```
+iPhone6:~# service sshd start
+grep: /proc/filesystems: No such file or directory
+ * You are attempting to run an openrc service on a
+ *  * another initialization system to boot this system.
+ * If you really want to do this, issue the following command:
+ * ERROR: sshd failed to start
+iPhone6:~# 
+```
+
+```
+iPhone6:~# /usr/sbin/sshd
+sshd: no hostkeys available -- exiting.
+```
+
+```
+iPhone6:~# cat /etc/inittab
+# /etc/inittab
+
+::sysinit:/sbin/openrc sysinit
+::sysinit:/sbin/openrc boot
+::wait:/sbin/openrc default
+
+# Set up a couple of getty's
+tty1::respawn:/sbin/getty 38400 tty1
+tty2::respawn:/sbin/getty 38400 tty2
+tty3::respawn:/sbin/getty 38400 tty3
+tty4::respawn:/sbin/getty 38400 tty4
+tty5::respawn:/sbin/getty 38400 tty5
+tty6::respawn:/sbin/getty 38400 tty6
+
+# Put a getty on the serial port
+#ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100
+
+# Stuff to do for the 3-finger salute
+::ctrlaltdel:/sbin/reboot
+
+# Stuff to do before rebooting
+::shutdown:/sbin/openrc shutdown
+```
+
+This is a tricky one, without an external keyboard
+```
+iPhone6:~# vi /etc/inittab
+```
+
+vi step by step on iPhone6 without external keyboard
+```
+# vi /etc/inittab
+
+# navigation help
+h - left
+j - down
+k - up
+l - right
+
+# (navigate) down, right, right, right...
+jllll      
+
+#                     place cursor here  
+#                     | 
+::sysinit:/sbin/openrc sysinit
+
+# (d shift4) delete from curosr to the end of the line
+d$         
+::sysinit:/sbin/openrc
+
+# write (save) and quit vi
+:wq        
+
+# otherwise quit without saving
+:q!
+```
+
+```
+iPhone6:~# cat /etc/inittab
+# /etc/inittab
+
+::sysinit:/sbin/openrc
+::sysinit:/sbin/openrc boot
+::wait:/sbin/openrc default
+```
+
+```
+iPhone6:~# rc-status
+Runlevel: sysinit
+ sshd                               [  stopped  ]
+Dynamic Runlevel: hotplugged
+Dynamic Runlevel: needed/wanted
+Dynamic Runlevel: manual
+```
+
+```
+iPhone6:~# rc-update add sshd
+ * rc-update: sshd already installed in runlevel `sysinit'; skipping
+
+```
+
+Close iSH.app completely and open again
+```
+iPhone6:~# exit
+```
+
+```
+iPhone6:~# rc-service sshd status
+ * status: starting
+```
+
+
+```
+iPhone6:~# /usr/sbin/sshd
+iPhone6:~# 
+```
+
+Test from iPad
+```
+iPad:~# ssh root@192.168.0.73
+ssh: connect to host 192.168.0.73 port 22: Connection refused
+iPad:~# ssh root@192.168.0.73
+The authenticity of host '192.168.0.73 (192.168.0.73)' can't be established.
+RSA key fingerprint is SHA256:Ktrk/h6j9Ti22oCo4VkyI5WWWpCQPPwlD7i9wymA2NQ.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '192.168.0.73' (RSA) to the list of known hosts.
+root@192.168.0.73's password: 
+Permission denied, please try again.
+root@192.168.0.73's password: 
+Welcome to Alpine!
+
+You can install packages with: apk add <package>
+
+You may change this message by editing /etc/motd.
+
+iPhone6:~# 
+```
+
+It looks like it tries to install the last used or the newest one.
+Never mind. (crl+C) to exit.
+```
+iPad:~# ssh-copy-id root@192.168.0.73
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa_ipad-2-j17.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+expr: warning: '^ERROR: ': using '^' as the first character
+of a basic regular expression is not portable; it is ignored
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@192.168.0.73's password:
+^c 
+```
+
+Generate new key
+```
+iPad:~/.ssh# ssh-keygen -C 'ipad' -f ~/.ssh/id_rsa_ipad
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /root/.ssh/id_rsa_ipad
+Your public key has been saved in /root/.ssh/id_rsa_ipad.pub
+The key fingerprint is:
+SHA256:7E+hwO8uKa7E28XIfjW2ojkukGKipMB/xrh0eXpd+Wk ipad
+The key's randomart image is:
++---[RSA 3072]----+
+|                 |
+|                 |
+|                 |
+|     . .         |
+|..    o S . .    |
+|*= . o.++. +     |
+|O.+.=oo==oo . .  |
+|o.o*+*Bo.+   E   |
+|  o*@*.+o . .    |
++----[SHA256]-----+
+```
+
+Copy public key from iPad —> iPhone6 
+It will be automatically added to ~/.ssh/authorize_keys 
+and all files will be created on the fly.
+
+```
+iPad:~/.ssh# ssh-copy-id -i ~/.ssh/id_rsa_ipad.pub root@192.168.0.73
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa_ipad.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+expr: warning: '^ERROR: ': using '^' as the first character
+of a basic regular expression is not portable; it is ignored
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@192.168.0.73's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'root@192.168.0.73'"
+and check to make sure that only the key(s) you wanted were added.
+```
+
+```
+iPhone6:~# exit
+Connection to 192.168.0.73 closed.
+```
+
+```
+iPad:~/.ssh# ssh-add -L
+Could not open a connection to your authentication agent.
+iPad:~/.ssh# 
+```
+
+```
+iPad:~/.ssh# eval `ssh-agent -s`
+Agent pid 131
+```
+
+```
+iPad:~/.ssh# ssh-add ~/.ssh/id_rsa_ipad
+Identity added: /root/.ssh/id_rsa_ipad (ipad)
+```
+
+```
+iPad:~/.ssh# ssh root@192.168.0.73
+Welcome to Alpine!
+...
+iPhone6:~# exit
+Connection to 192.168.0.73 closed.
+
+iPad:~/.ssh# 
+```
+
+
