@@ -2,6 +2,9 @@
 
 - [Welcome to Alpine on iPhone 6! (2023-04-12)](#iphone6)
 
+- [Config GitHub on iPhone 6](2023-04-13)(#iphone6-github) 
+
+
 ## My notes about iSH.app and SSH configuration on iPad and Mac
 
 ## SSH Configuration
@@ -1400,6 +1403,78 @@ iPhone6:~# exit
 Connection to 192.168.0.73 closed.
 
 iPad:~/.ssh# 
+```
+
+<div id='iphone6-github'/>                                                                                                                                                                          
+
+## Config GitHub on iPhone6 
+
+New defaut key
+```
+iPhone6:~# ssh-keygen -t ed25519 -C "MY@EMAIL.COM"
+```
+
+Start the ssh-agent
+```
+iPhone6:~# eval "$(ssh-agent -s)"
+```
+
+Edit config
+```
+iPhone6:~# vi ~/.ssh/config 
+```
+
+Config:
+```
+iPhone6:~# cat ~/.ssh/config
+#---------------------------------
+Host github.com
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_ed25519
+#---------------------------------
+```
+
+List files
+```
+iPhone6:~# ls -1 ~/.ssh
+> authorized_keys
+> config
+> id_ed25519
+> id_ed25519.pub
+> known_hosts
+```
+
+Add your SSH private key to the ssh-agent.
+```
+iPhone6:~# ssh-add ~/.ssh/id_ed25519
+```
+
+cat, copy and paste to  `https://github.com/settings/ssh/new`  Login first!
+```
+iPhone6:~# cat ~/.ssh/id_ed25519.pub 
+```
+
+Test an SSH connection 
+```
+iPhone6:~# ssh -T git@github.com
+> Hi januszoles! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+Displays the fingerprints of all the keys that have been added to the SSH agent
+```
+iPhone6:~# ssh-add -l -E sha256
+```
+
+Verbose Test
+```
+iPhone6:~# ssh -vT git@github.com
+```
+
+Clone repo
+```
+iPhone6:~# git clone git@github.com:januszoles/ish.git
+> Cloning into 'ish'...
+...
 ```
 
 
