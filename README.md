@@ -1482,19 +1482,26 @@ iPhone6:~# git clone git@github.com:januszoles/ish.git
 
 ## Apple Bluetooth Keyboard A1314 Setup on iPhone6
 
-1. Go to: Settings > Bluetooth 
+1. Go to: Settings > Bluetooth, 
+
 2. Turn OFF Bluetooth,
+
 3. Turn ON Bluetooth,
 
 Keyboard:
+
 4. Check if it is on: Press it once (if light turns green is set to ON),
+
 5. Turn keyboard OFF: Press and hold on/off button,
+
 6. Turn keyboard ON and pair it with iPhone: Press and hold on/off button until the green light start blinking, that means it’s ready to pair with new device,
+
 7. On iPhone6 press `keyboardName ` (if there is one)
 
 > NOTE: After few tries it should find, and recognize a keyboard,
 > When connected it shows pairing passcode on the screen
 
-8.  iPhone6 will display 4 digit passcode
+8. iPhone6 will display 4 digit passcode
+
 9. Type the passcode on keyboard, (you need to do it just once)
 
