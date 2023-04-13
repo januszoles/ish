@@ -2,7 +2,7 @@
 
 - [Welcome to Alpine on iPhone 6! (2023-04-12)](#iphone6)
 
-- [Config GitHub on iPhone 6](2023-04-13)(#iphone6-github) 
+- [Config GitHub on iPhone 6 (2023-04-13)](#iphone6-github) 
 
 
 ## My notes about iSH.app and SSH configuration on iPad and Mac
