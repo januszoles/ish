@@ -1409,7 +1409,7 @@ iPad:~/.ssh#
 
 ## Config GitHub on iPhone6 
 
-New defaut key
+New default key
 ```
 iPhone6:~# ssh-keygen -t ed25519 -C "MY@EMAIL.COM"
 ```
