@@ -1478,6 +1478,21 @@ iPhone6:~# git clone git@github.com:januszoles/ish.git
 ...
 ```
 
+Edit 
+```
+iPhone6:~# vi  /etc/hosts
+```
+
+```
+iPhone6:~# cat /etc/hosts
+
+127.0.0.1       localhost localhost.localdomain
+::1             localhost localhost.localdomain
+192.168.0.24    ipad
+192.168.0.73    j6
+```
+
+
 <div id='iphone6-keyboard'/>                                                                                                                                                                          
 
 ## Apple Bluetooth Keyboard A1314 Setup on iPhone6
