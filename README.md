@@ -1297,30 +1297,56 @@ iPhone6:~# /usr/sbin/sshd
 iPhone6:~# 
 ```
 
+One more try after restart iPhone and iSH
+```
+iPhone6:~# rc-status
+Runlevel: default
+Dynamic Runlevel: hotplugged
+Dynamic Runlevel: needed/wanted
+Dynamic Runlevel: manual
+
+
+iPhone6:~# rc-update add sshd
+ * service sshd added to runlevel default
+
+
+iPhone6:~# rc-status
+Runlevel: default
+ sshd                               [  started  ]
+Dynamic Runlevel: hotplugged
+Dynamic Runlevel: needed/wanted
+Dynamic Runlevel: manual
+
+
+iPhone6:~# rc-service sshd status
+ * status: started
+```
+
+
+
 Test from iPad
 ```
 iPad:~# ssh root@192.168.0.73
 ssh: connect to host 192.168.0.73 port 22: Connection refused
+
 iPad:~# ssh root@192.168.0.73
 The authenticity of host '192.168.0.73 (192.168.0.73)' can't be established.
 RSA key fingerprint is SHA256:Ktrk/h6j9Ti22oCo4VkyI5WWWpCQPPwlD7i9wymA2NQ.
 This key is not known by any other names
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 Warning: Permanently added '192.168.0.73' (RSA) to the list of known hosts.
-root@192.168.0.73's password: 
-Permission denied, please try again.
+
 root@192.168.0.73's password: 
 Welcome to Alpine!
-
-You can install packages with: apk add <package>
-
-You may change this message by editing /etc/motd.
 
 iPhone6:~# 
 ```
 
+### Copy ssh public key from iPad --> iPhone6
+
 It looks like it tries to install the last used or the newest one.
 Never mind. (crl+C) to exit.
+
 ```
 iPad:~# ssh-copy-id root@192.168.0.73
 /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa_ipad-2-j17.pub"
@@ -1356,9 +1382,10 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-Copy public key from iPad —> iPhone6 
-It will be automatically added to ~/.ssh/authorize_keys 
+Copy public key from iPad ---> iPhone6 
+It will be automatically added to ~/.ssh/authorize_keys on iPhone 
 and all files will be created on the fly.
+This method is way fastere then doing it by scpand copy and paste to authorized key.
 
 ```
 iPad:~/.ssh# ssh-copy-id -i ~/.ssh/id_rsa_ipad.pub root@192.168.0.73
