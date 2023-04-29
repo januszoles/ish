@@ -1,5 +1,12 @@
 Tmux:  cheet shee, tmux conf,		
 
+## Install tmux
+
+```
+J-iPad:~# apk add tmux
+J-iPad:~# tmux -V
+tmux 3.2
+```
 
 ## What is Tmux?
 
@@ -19,27 +26,35 @@ When you run `tmux` it creates server in `/tmp/tmux-0/default`
 Inside serwer it creates session and inside session it creates a window and inside windows it creates panes.
 
 1. start tmux session
-iPad:/tmp# `tmux` 
+```
+J-iPad:~# tmux 
+```
 
 2. list all active session
-iPad:/tmp# `tmux ls` 
+```
+J-iPad:~# tmux ls 
+```
 ```output
 0: 1 windows (created Tue Apr 25 23:57:52 2023) (attached)
 ```
 I am attached to window 1 in session 0
 
-2. Run top
+3. Run top
+
 iPad:/tmp# `top`
 
-3. Detache from the session
+4. Detache from the session
+
 type `^b d`
+
 ```output
-iPad:~# tmux
+J-iPad:~# tmux
 [detached (from session 0)]
 ```
 I’m detachaed from session 0
 
-4. List session (looks similar like 1. but not (attached) at the end of line
+5. List session (looks similar like 1. but not (attached) at the end of line
+
 ```
 J-iPad:~# tmux ls
 0: 1 windows (created Wed Apr 26 00:24:59 2023)
@@ -48,7 +63,7 @@ J-iPad:~#
 Server is still running and session is on.
 
 
-5. Attach to session
+6. Attach to session
 ```
 J-iPad:~# tmux attach
 ```
@@ -65,22 +80,21 @@ Load average:
    15    14 root     RW       0   0%  17   0% -ash
 
 ```
-`top` is still runing monitoring
+`top` is still runing
 
 
-6. List all session from within a tmux 
+7. List all session from within a tmux 
+
 type `^b s`  it will list all all session
 
-![List of Session Screenshot](:/e254a3fc5f7a457ba1b50e6a1a567daf)
+![List of Session Screenshot](./c-b_s-list-all-sesion.jpg)
 
 
 pres `Enter`
 
-7. `^ b $` Rename Session
+8. `^ b $` Rename Session
 
-![Rename Session ScreenShot](:/6b5d5efd04c84e9fa85c3e84c952c108)
-
-8. `^ b c` Create another window
+9. `^ b c` Create another window
 
 
 ## Tmux configuration
@@ -106,73 +120,29 @@ Try to add mouse support at the bottom of this config file, restart tmux
 >NOTE: On `ipad` **scrolling does NOT work** when dragging screen with finger.
 >(*at least on my ipad*)
 
-6. Edit rest of the config setting in `vi` or `vim` (*I have better expirience with* `vi` *as far as screen refreshing*. If you have problem with visibility. refresh screen by typing:
+6. Edit rest of the config setting in `vi` or `vim` (*I have better expirience with* `vi` *as far as screen refreshing*.  
+  If you have problem with visibility. refresh screen by typing:  
+  `C-b r`       Redraw the current client`
+
 6a. `vi ~/.tmux.conf`
+
 6b. `shift g` <- go to the end of the file  
+
 6c. `o` <- add empty line at the bottom (similar to `i`)
 
-6d. Enable RGB colour if running in xterm(1)
+6d. Enable RGB colour if running in xterm(1)  
     `set-option -sa terminal-overrides ",xterm*:Tc"`
 
-6e. Change the default $TERM to tmux-256color
+6e. Change the default $TERM to tmux-256color  
     `set -g default-terminal "tmux-256color"`
+
 6f. `esc` key 
+
 6g. `:wq` `enter`
 
-***
 
+## Help `Ctrl-b ?`
 
-
-# A quick cheatsheet
-```
-# session management
-
-tmux ls (or tmux list-sessions)
-tmux new -s session-name
-
-Ctrl-b d Detach from session
-tmux attach -t [session name]
-
-tmux kill-session -t session-name
-
-Ctrl-b c Create new window
-Ctrl-b d Detach current client
-Ctrl-b l Move to previously selected window
-Ctrl-b n Move to the next window
-Ctrl-b p Move to the previous window
-Ctrl-b & Kill the current window
-Ctrl-b , Rename the current window
-Ctrl-b q Show pane numbers (used to switch between panes)
-Ctrl-b o Switch to the next pane
-Ctrl-b ? List all keybindings
-
-# moving between windows
-Ctrl-b n (Move to the next window)
-Ctrl-b p (Move to the previous window)
-Ctrl-b l (Move to the previously selected window)
-Ctrl-b w (List all windows / window numbers)
-Ctrl-b window number (Move to the specified window number, the
-default bindings are from 0 -- 9)
-
-# Tiling commands
-
-Ctrl-b % (Split the window vertically)
-CTRL-b " (Split window horizontally)
-Ctrl-b o (Goto next pane)
-Ctrl-b q (Show pane numbers, when the numbers show up type the key to go to that pane)
-Ctrl-b { (Move the current pane left)
-Ctrl-b } (Move the current pane right)
-
-# Make a pane its own window
-Ctrl-b : "break-pane"
-
-# add to ~/.tmux.conf
-bind | split-window -h
-bind - split-window -v
-```
-
-
-# Help `Ctrl-b ?`
 ```
 C-b C-b     Send the prefix key                                                                  
 C-b C-o     Rotate through the panes
