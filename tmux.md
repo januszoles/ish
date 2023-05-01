@@ -1,4 +1,4 @@
-Tmux:  cheet shee, tmux conf,		
+# Tmux: notes, tmux.conf	
 
 ## Install tmux
 
@@ -45,7 +45,7 @@ iPad:/tmp# `top`
 
 4. Detache from the session
 
-type `^b d`
+   `^b d`  (ctr-b d) detache    
 
 ```output
 J-iPad:~# tmux
@@ -53,7 +53,8 @@ J-iPad:~# tmux
 ```
 I’m detachaed from session 0
 
-5. List session (looks similar like 1. but not (attached) at the end of line
+
+5. List session 
 
 ```
 J-iPad:~# tmux ls
@@ -65,7 +66,7 @@ Server is still running and session is on.
 
 6. Attach to session
 ```
-J-iPad:~# tmux attach
+J-iPad:~# tmux a
 ```
 ```output
 Mem: 889208K used, 130007K free, 130007K shrd, 0K buff, 0K cached
@@ -73,28 +74,20 @@ CPU:  31% usr   0% sys   0% nic  68% idle   0% io   0% irq   0% sirq
 Load average: 
   PID  PPID USER     STAT   VSZ %VSZ CPU %CPU COMMAND
     1     0 root     RW       0   0% 1468029077   0% /sbin/init
-    2     1 root     RW       0   0%   0   0% /bin/login -f root
-    4     2 root     RW       0   0% 1468029077   0% -ash
-    9     1 root     RW       0   0%   0   0% /sbin/getty 38400 tty1
-   14     1 root     RW       0   0% 1468029077   0% {tmux: server} tmux
-   15    14 root     RW       0   0%  17   0% -ash
+    ...
+    14     1 root     RW       0   0% 1468029077   0% {tmux: server} tmux
 
 ```
 `top` is still runing
 
 
-7. List all session from within a tmux 
-
-type `^b s`  it will list all all session
+7. `^b s`  List all session
 
 ![List of Session Screenshot](./c-b_s-list-all-sesion.jpg)
 
+8. `^b $` Rename session
 
-pres `Enter`
-
-8. `^ b $` Rename Session
-
-9. `^ b c` Create another window
+9. `^b c` Create another window
 
 
 ## Tmux configuration
@@ -120,13 +113,13 @@ Try to add mouse support at the bottom of this config file, restart tmux
 >NOTE: On `ipad` **scrolling does NOT work** when dragging screen with finger.
 >(*at least on my ipad*)
 
-6. Edit rest of the config setting in `vi` or `vim` (*I have better expirience with* `vi` *as far as screen refreshing*.  
+6. Edit rest of the config in `vi` or `vim` (*I have better expirience with* `vi` *as far as screen refreshing*.  
   If you have problem with visibility. refresh screen by typing:  
-  `C-b r`       Redraw the current client`
+  `^b r`       Redraw the current client`
 
 6a. `vi ~/.tmux.conf`
 
-6b. `shift g` <- go to the end of the file  
+6b. `G` <- (shift-g) go to the end of the file  
 
 6c. `o` <- add empty line at the bottom (similar to `i`)
 
@@ -227,5 +220,43 @@ C-b S-Up    Move the visible part of the window up
 C-b S-Down  Move the visible part of the window down
 C-b S-Left  Move the visible part of the window left
 C-b S-Right Move the visible part of the window right   
+
+
 ```
+## Tmux Copy and Paset
+
+1. add `set -g mode-keys vi` to ~/.tmux.conf
+
+```
+# enable vi mode for copy-mode and navigation (tmux defautl is emacs mode)
+set -g mode-keys vi
+```
+
+2. `cat /etc/hosts`
+
+3. start copy mode `^b [`
+
+4. navigate to line
+`127.0.0.1       localhost localhost.localdomain` with j,k,h,l
+
+5. press `space bar` to start selecting
+
+6. select text with arrow keys or (hjkl)
+
+7. press `Enter` to copy,
+
+8. open new doc `vi new.txt`
+
+9. paste `^b ]`
+
+
+
+
+`^b :` type: `list-keys`
+`?`    (search up) *search for* **mode**
+```
+bind-key    -T prefix       [                    copy-mode
+bind-key    -T prefix       ]                    paste-buffer -p
+```
+
 
