@@ -23,7 +23,7 @@ When you run `tmux` it creates server in `/tmp/tmux-0/default`
 
 `server > n num of session > n num of windows > n num of panes`
 
-Inside serwer it creates session and inside session it creates a window and inside windows it creates panes.
+Inside server it creates session and inside session it creates a window and inside windows it creates panes.
 
 1. start tmux session
 ```
@@ -48,7 +48,6 @@ iPad:/tmp# `top`
    `^b d`  (ctr-b d) detache    
 
 ```output
-J-iPad:~# tmux
 [detached (from session 0)]
 ```
 I’m detachaed from session 0
@@ -59,7 +58,6 @@ I’m detachaed from session 0
 ```
 J-iPad:~# tmux ls
 0: 1 windows (created Wed Apr 26 00:24:59 2023)
-J-iPad:~# 
 ```
 Server is still running and session is on.
 
