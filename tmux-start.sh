@@ -34,9 +34,8 @@ tmux send-keys -t $session1:$window1 'vim tmux-start.sh' C-m
 # Create win in 2nd `session2`
 ###################################################
 window2=0
-tmux rename-window -t $session2:$window2 'ssh';
-tmux send-keys -t $session2:$window2 'ssh j6' C-m;
-# tmux send-keys -t $session2:$window2 'ls -al' C-m;
-
+tmux rename-window -t $session2:$window2 'ssh-j6'
+tmux send-keys -t $session2:$window2 'ssh j6' C-m
+tmux send-keys -t $session2:$window2 'tmux list-sessions' C-m
 
 tmux attach-session -t $session1
