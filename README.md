@@ -6,6 +6,8 @@
 
 - [Apple Bluetooth Keyboard A1314 Setup on iPhone6](#iphone6-keyboard)
 
+- [My Notes About Tmux on iPad Using iSH.app (2023-05-03)](./tmux.md#tmux-ipad)
+
 ## My notes about iSH.app and SSH configuration on iPad and Mac
 
 ## SSH Configuration
