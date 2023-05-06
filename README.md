@@ -8,6 +8,8 @@
 
 - [My Notes About Tmux on iPad Using iSH.app (2023-05-03)](./tmux.md#tmux-ipad)
 
+- [Config ssh j13 <-> j6 (2023-05-06)](#j13-j6)
+
 ## My notes about iSH.app and SSH configuration on iPad and Mac
 
 ## SSH Configuration
@@ -1362,4 +1364,58 @@ Keyboard:
 8. iPhone6 will display 4 digit passcode
 
 9. Type the passcode on keyboard, (you need to do it just once)
+
+
+***
+
+<div id="j13-j6"/>
+
+## Config ssh j13 <-> j6 (2023-05-06)
+
+> Note:  
+	Mac prompt:      `j13:`  
+	iPhone6 prompt:  `j6:`  
+
+
+### Configure ssh j13 -> j6
+
+```
+j13:~$ ssh-keygen -t ed25519 -C 'j13-j6' -f ~/.ssh/ed25519_j13-j6
+j13:~$ ssh-copy-id -i ~/.ssh/ed25519_j13-j6.pub root@192.168.0.6
+
+j13:~$ cat ~/.ssh/config
+
+Host j6
+    Hostname 192.168.0.6
+    Port 22
+    IdentityFile ~/.ssh/ed25519_j13-j6
+    User root
+
+j13:~/$ ssh j6
+Welcome to Alpine on iPhone 6!
+```
+
+### Configure ssh j6 -> j13
+
+```sh
+
+j6:~# ssh-keygen -t ed25519 -C 'j6-j13' -f ~/.ssh/ed25519_j6-j13
+Generating public/private ed25519 key pair.
+
+j6:~# ssh-copy-id -i ~/.ssh/ed25519_j6-j13 januszoles@192.168.0.13
+
+j6:~# cat ~/.ssh/config
+
+Host j13
+    Hostname 192.168.0.13
+    Port 22
+    IdentityFile ~/.ssh/ed25519_j6-j13
+    User januszoles
+
+j6:~# ssh j13
+Last login: Sat May  6 12:09:25 2023 from 192.168.0.6
+```
+
+***
+
 
