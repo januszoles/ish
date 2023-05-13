@@ -10,6 +10,7 @@
 
 - [Config ssh j13 <-> j6 (2023-05-06)](#j13-j6)
 
+- [Fixing `WARNING: Ignoring http://apk.ish.app/v3.14-2023-04-28/community: No such file or directory` (2023-05-13)](#fix-apk-repos)
 ## My notes about iSH.app and SSH configuration on iPad and Mac
 
 ## SSH Configuration
@@ -1418,4 +1419,74 @@ Last login: Sat May  6 12:09:25 2023 from 192.168.0.6
 
 ***
 
+<div id="fix-apk-repos"/>
+
+
+### Fixing `WARNING: Ignoring http://apk.ish.app/v3.14-2023-05-08/main: No such file or directory` (2023-05-13)
+```
+j6:~# apk info starship
+WARNING: Ignoring http://apk.ish.app/v3.14-2023-05-08/main: No such file or directory
+WARNING: Ignoring http://apk.ish.app/v3.14-2023-04-28/community: No such file or directory
+```
+
+```sh
+j6:~# cat /etc/apk/repositories 
+# This file contains pinned repositories managed by iSH. If the /ish directory
+# exists, iSH uses the metadata stored in it to keep this file up to date (by
+# overwriting the contents on boot.)
+http://apk.ish.app/v3.14-2023-05-08/main
+http://apk.ish.app/v3.14-2023-04-28/community
+```
+
+
+```sh
+j6:~# echo https://dl-cdn.alpinelinux.org/alpine/v3.14/main >> /etc/apk/repositories
+
+j6:~# echo https://dl-cdn.alpinelinux.org/alpine/v3.14/community >> /etc/apk/repositories
+```
+
+```sh
+j6:~# cat /etc/apk/repositories 
+# This file contains pinned repositories managed by iSH. If the /ish directory
+# exists, iSH uses the metadata stored in it to keep this file up to date (by
+# overwriting the contents on boot.)
+http://apk.ish.app/v3.14-2023-05-08/main
+http://apk.ish.app/v3.14-2023-04-28/community
+https://dl-cdn.alpinelinux.org/alpine/v3.14/main
+https://dl-cdn.alpinelinux.org/alpine/v3.14/community
+```
+
+Insert hash `#` in front of each line starting with `http://apk.ish.app`
+
+```sh
+j6:~/ish# sed -i -e 's/^\(http:\/\/apk.ish.app\)/# \1/' /etc/apk/repositories
+```
+
+Check
+
+```sh
+j6:~/ish# cat /etc/apk/repositories
+# This file contains pinned repositories managed by iSH. If the /ish directory
+# exists, iSH uses the metadata stored in it to keep this file up to date (by
+# overwriting the contents on boot.)
+# http://apk.ish.app/v3.14-2023-05-08/main
+# http://apk.ish.app/v3.14-2023-04-28/community
+https://dl-cdn.alpinelinux.org/alpine/v3.14/main
+https://dl-cdn.alpinelinux.org/alpine/v3.14/community
+```
+
+
+Back in business
+```
+j6:~/ish# apk info starship
+starship-0.54.0-r0 description:
+The minimal, blazing-fast, and infinitely customizable prompt for any shell!
+
+starship-0.54.0-r0 webpage:
+https://starship.rs
+
+starship-0.54.0-r0 installed size:
+2436 KiB
+```
+***
 
