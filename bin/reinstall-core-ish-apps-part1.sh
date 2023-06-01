@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# /root/bin/reinstall-core-ish-apps.sh
+# /root/bin/reinstall-core-ish-apps-part1.sh
 
 #  description : Reinstall core Alpine Linux apps on iSH.app iOS
 #       author : Janusz Oles
 #      version : 20230601-01
-#        usage : sh reinstall-core-ish-apps.sh
+#        usage : sh /root/bin/reinstall-core-ish-apps-part1.sh
 #         NOTE : need your interaction to set up root password
 
 echo "==> Default repo locations"
@@ -75,19 +75,5 @@ echo "---"
 echo "==> Need to restart ish before adding sshd to OpenRC"
 exit
 ##### END OF SSH SET-UP ######################################################
-##### END OF reinstall-core-ish-apps.sh ######################################
+##### END OF reinstall-core-ish-apps-part1.sh ######################################
 ##############################################################################
-
-
-####### AFTER RESTART ########################################################
-## new script ###
-##############################################################################
-rc-update add sshd  # add sshd to services
-
-apk add curl        # URL retrival utility and library
-                    # https://curl.se/
-
-
-apk add awake       # python command and library to 'wake on lan' a remote host
-                    # https://github.com/cyraxjoe/awake
-                    
