@@ -75,5 +75,5 @@ echo "---"
 echo "==> Need to restart ish before adding sshd to OpenRC"
 exit
 ##### END OF SSH SET-UP ######################################################
-##### END OF reinstall-core-ish-apps-part1.sh ######################################
+##### END OF reinstall-core-ish-apps-part1.sh ################################
 ##############################################################################
