@@ -17,7 +17,10 @@ rc-update add sshd  # add sshd to services
 apk add curl        # URL retrival utility and library
                     # https://curl.se/
 
-
 apk add awake       # python command and library to 'wake on lan' a remote host
                     # https://github.com/cyraxjoe/awake
-                    
+apk add \
+  nvim \
+  stow \
+
+		    
