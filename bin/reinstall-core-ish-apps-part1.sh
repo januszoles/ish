@@ -4,9 +4,19 @@
 
 #  description : Reinstall core Alpine Linux apps on iSH.app iOS
 #       author : Janusz Oles
-#      version : 20230601-01
+#      version : 20230605-02
 #        usage : sh /root/bin/reinstall-core-ish-apps-part1.sh
 #         NOTE : need your interaction to set up root password
+#                timezone is set to Europe/Warsaw
+#                WORK IN PROGRESS!!
+######################################################################
+##### EDIT! 
+GIT_USER="yourname"
+GIT_EMAIL="youremail@example.com"
+GIT_DEFAULT_BRANCH="main"
+GIT_CORE_EDITOR="nvim"
+TIMEZONE="/Europe/Warsaw"                 # change to your location
+#####################################################################
 
 echo "==> Default repo locations"
 cat /etc/apk/repositories
@@ -31,9 +41,46 @@ echo "==> Add man pages"
 apk add man-pages
 apk add mandoc-apropos
 
+echo "==> Add nvim"
+apk add nvim
+apk add nvim-doc
+
 echo "==> Add version control system (https://www.git-scm.com/)"
 apk add git         # version control system  
 apk add git-doc     # git man pages
+
+echo "==> Set up git"
+git config --global user.name "$GIT_USER"
+git config --global user.email "$GIT_EMAIL"
+git config --global init.defaultBranch "$GIT_DEFAULT_BRANCH" 
+
+git config --global color.ui auto
+
+# Global ignore file:
+echo ".DS_Store" >> ~/.gitignore
+git config --global core.excludesfile ~/.gitignore
+
+
+git config --global core.editor "$GIT_CORE_EDITOR"
+
+git config --global diff.tool nvimdiff
+git config --global merge.tool nvimdiff
+git config --global --add difftool.prompt false
+git config --global alias.dt difftool
+git config --global difftool.nvimdiff.cmd '/usr/bin/nvim -d "$LOCAL" "$REMOTE"'
+
+ehco "==> List git configuration:"
+git config --list
+echo "---"
+cat ~/.gitconfig
+
+echo "==> Fix my timezoen from UTC --> CEST"
+date
+apk add tzdata  #Timezone data. https://www.iana.org/time-zones
+cp /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+cp /usr/share/zoneinfo/"${TIMEZONE}"/etc/localtime
+date
+
 
 echo "==> Add and set-up SSH server (https://www.openssh.com/portable.html)"
 apk add openssh     # ssh server
