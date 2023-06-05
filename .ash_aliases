@@ -1,0 +1,5 @@
+alias ll='ls -AFlh --group-directories-first'
+
+alias vimdiff='nvim -d'
+
+alias sf='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs nvim'

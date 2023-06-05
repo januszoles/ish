@@ -12,3 +12,5 @@ sed -i -e '/http:\/\/apk.ish.app/d' /etc/apk/repositories
 echo "--- New /etc/apk/repositories ---"
 cat /etc/apk/repositories
 echo "---"
+apk update
+apk upgrade

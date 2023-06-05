@@ -23,19 +23,31 @@ echo https://dl-cdn.alpinelinux.org/alpine/v3.14/community >> /etc/apk/repositor
 # rem old lines
 sed -i -e '/http:\/\/apk.ish.app/d' /etc/apk/repositories 
 
+apk update
+apk upgrade
 
 rc-update add sshd  # add sshd to services
+
+apk add nvim
+
+apk add tmux
+
+apk add tmux-doc
+
+apk add stow
 
 apk add curl        # URL retrival utility and library
                     # https://curl.se/
 
 apk add awake       # python command & library to 'wake on lan' a remote host
                     # https://github.com/cyraxjoe/awake
-apk add \
-  nvim \
-  stow \
-  tmux \
-  tmux-doc \
 
+apk add fd          # Simple, fast, user-friendly alternative to find
 
-		    
+apk add fzf         # A command-line fuzzy finder
+                    # https://github.com/junegunn/fzf
+
+apk add fzf-tmux    # Helper script to start fzf in a tmux pane
+
+apk add ncurses     # Console display library 
+                    # (lib contain tput used by fzf-tmux)  		    
