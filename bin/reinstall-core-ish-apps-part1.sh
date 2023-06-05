@@ -74,10 +74,10 @@ git config --list
 echo "---"
 cat ~/.gitconfig
 
+
 echo "==> Fix my timezoen from UTC --> CEST"
 date
 apk add tzdata  #Timezone data. https://www.iana.org/time-zones
-cp /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 cp /usr/share/zoneinfo/"${TIMEZONE}"/etc/localtime
 date
 
