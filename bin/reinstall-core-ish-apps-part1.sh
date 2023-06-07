@@ -69,7 +69,7 @@ git config --global --add difftool.prompt false
 git config --global alias.dt difftool
 git config --global difftool.nvimdiff.cmd '/usr/bin/nvim -d "$LOCAL" "$REMOTE"'
 
-ehco "==> List git configuration:"
+echo "==> List git configuration:"
 git config --list
 echo "---"
 cat ~/.gitconfig
