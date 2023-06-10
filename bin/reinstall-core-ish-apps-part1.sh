@@ -140,6 +140,11 @@ _add_core_apps() {
   apk add ncurses
 }
 
+_set_nvim() {
+
+  sh -c 'curl -fLo "$HOME"/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+}
 
 _set_git() {
   _info "Set up git"
@@ -154,6 +159,9 @@ _set_git() {
 
   # check if 'nvim' is installed 
   APP_NVIM=`which nvim`
+
+
+
 
   if [ -z "${APP_NVIM}" ];then  
     _error "Could not find the 'nvim' executable"
@@ -235,7 +243,7 @@ _main() {
   _add_openrc
 
   _add_core_apps 
-
+  _set_nvim
   _set_timezone
   _set_git
   _set_ssh
