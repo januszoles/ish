@@ -57,17 +57,17 @@ set re=0
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
 
-"" True color if available
-"let term_program=$TERM_PROGRAM
-"
-"" Check for conflicts with Apple Terminal app
-"if term_program !=? 'Apple_Terminal'
-"  set termguicolors
-"else
-"  if $TERM !=? 'xterm-256color'
-"    set termguicolors
-"  endif
-"endif
+" True color if available
+let term_program=$TERM_PROGRAM
+
+" Check for conflicts with Apple Terminal app
+if term_program !=? 'Apple_Terminal'
+  set termguicolors
+else
+  if $TERM !=? 'xterm-256color'
+    set termguicolors
+  endif
+endif
 
 ": so %
 " --- Plugins
@@ -79,4 +79,6 @@ call plug#begin('~/.config/nvim/plugged')
 
 call plug#end()
 
-colorscheme gruvbox
+syntax on
+colorscheme tokyonight
+
