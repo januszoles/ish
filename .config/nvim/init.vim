@@ -1,6 +1,3 @@
-" https://dev.to/elvessousa/my-basic-neovim-setup-253l
-" article about how to set it up.
-
 
 nnoremap <SPACE> <Nop>
 let mapleader=" "
@@ -13,15 +10,29 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
-"Options
-set background=dark
+"–––––––––––––––– SPELL CHECKER –––––—–––––––––––––––––––––––––––————————————
+setlocal spell spelllang=pl,en_us      " PL EN Spell Checker
+
+" Toggle spell-checking
+function! ToggleSpellCheck()
+  set spell!
+  if &spell
+    echo "Spellcheck ON"
+  else
+    echo "Spellcheck OFF"
+  endif
+endfunction
+
+nnoremap <silent> <Leader>sp :call ToggleSpellCheck()<CR>
+"————————————————————————————————————————————————————————————————————————————
+
 set clipboard=unnamedplus
 set completeopt=noinsert,menuone,noselect
 set cursorline
 set hidden
 set inccommand=split
 set mouse=a
-"————————————————— SET LINE NUMBERS ——————————————————————————————————————————
+"————————————————— SET LINE NUMBERS —————————————————————————————————————————
 set number                             " show line numbers
 set relativenumber                     " show relative line number
 set numberwidth=5                      " width of number column
@@ -34,10 +45,19 @@ function! ToggleRelativeNumber()
 endfunction
 nnoremap <silent> <Leader>nu :call ToggleRelativeNumber()<cr>
 "————————————————————————————————————————
- " Toggle line numbers from none at all
+" Toggle line numbers from none at all
 " to relative numbering with current line number
 noremap <silent> <Leader>nn :set invnumber invrelativenumber<CR>
-"—————————————————————————————————————————————————————————————————————————————
+"————————————————————————————————————————————————————————————————————————————
+
+"——————————————————— SHOW WHITE SPACE ———————————————————————————————————————
+set list
+set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:» 
+
+" Toggle between invisible character by (space §) `\§`
+nmap <leader>§ :set list!<CR>
+"————————————————————————————————————————————————————————————————————————————
+
 set splitbelow splitright
 set title
 set ttimeoutlen=0
@@ -47,7 +67,7 @@ set wildmenu
 set expandtab
 set shiftwidth=2
 set tabstop=2
-"For git vimdiff to opnen in no reada only mode
+"For git vimdiff to open in no read only mode
 set noro
 
 "redrawtime exceeded syntax highlighting disabled" error 
@@ -69,8 +89,9 @@ else
   endif
 endif
 
-": so %
-" --- Plugins
+" ––––––––––––––– Plugins –––––––––––––––––––––––––––––––––––––––––––––––––––
+":so %  <-- remember to source config
+
 call plug#begin('~/.config/nvim/plugged')
 "    Plug '<github-user>/<repo-name>'
 
@@ -79,6 +100,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 call plug#end()
 
-syntax on
+"–––––––––––––––– Colorscheme –––––––––––––––––––––––––––––––––––––––––––––––
+syntax on                               " Syntax highlight
 colorscheme tokyonight
-
+set background=dark
