@@ -54,15 +54,25 @@ noremap <silent> <Leader>nn :set invnumber invrelativenumber<CR>
 set list
 set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:» 
 
-" Toggle between invisible character by (space §) `\§`
-nmap <leader>§ :set list!<CR>
+" Toogle invisible characters  <SPACE>§
+nmap <Leader>§ :set list!<CR>
+"––––––––––––––––––– FINDINGS FILES –––––––––––––––––––––––––––––––––––––––––
+" Seachr down into subfolders
+" Provides tab-completion for all file-related tasks
+set path+=**
+" Display all matching files when tab complete
+set wildmenu
 "————————————————————————————————————————————————————————————————————————————
-
+set noerrorbells                        "No sounds
+set nowrap                              "No soft wrap text
+set ignorecase                          "Ignore case of searches
+set incsearch                           "Highlight as pattern is typed
+set hlsearch                            "Highlight searches
 set splitbelow splitright
-set title
+set title                               "put filename onto terminal heading
 set ttimeoutlen=0
 set wildmenu
-
+set ruler                               " Show cursor position
 " Tabs size
 set expandtab
 set shiftwidth=2
@@ -104,3 +114,27 @@ call plug#end()
 syntax on                               " Syntax highlight
 colorscheme tokyonight
 set background=dark
+
+"––– Print today date
+map <leader>D :put =strftime('# %F %H:%M, %a')<ESC>kJo<ESC>
+map <leader>dt :r!date "+\%F \%H:\%M, \%a" <ESC>kJo<ESC>
+
+
+"––– fill rest of line with characters 
+function! FillLine( str )
+  " set tw to the desired total length
+  let tw = &textwidth
+  " column width 77 just for iPadMini
+  if tw==0 | let tw = 77 | endif
+    " strip trailing spaces first
+    .s/[[:space:]]*$//
+    " calculate total number of 'str's to insert
+    let reps = (tw - col("$")) / len(a:str)
+    " insert them, if there's room, removing trailing spaces (though forcing
+    " there to be one)
+  if reps > 0
+    .s/$/\=(' '.repeat(a:str,reps))/
+  endif
+endfunction
+map <leader>fl :call FillLine( '-' )
+map <leader>fl# :call FillLine( '#' )
