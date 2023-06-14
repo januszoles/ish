@@ -2,13 +2,33 @@
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
+
 " move line or visually selected block - alt+j/k
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
+fun SwitchLine(src_line_idx, direction)
+  if a:direction ==# 'up'
+    if a:src_line_idx == 1
+      return
+    endif
+    move-2
+    echo "Line UP"
+  elseif a:direction ==# 'down'
+    if a:src_line_idx == line('$')
+      return
+    endif
+    move+1
+    echo "Line DOWN"
+  endif
+endf
+
+nnoremap <silent> <S-k> :call SwitchLine(line('.'), 'up')<CR>
+nnoremap <silent> <S-j> :call SwitchLine(line('.'), 'down')<CR>
+
+"nnoremap <A-j> :m+<CR>
+"nnoremap <A-k> :m--<CR>
+"inoremap <A-j> <Esc>:m+<CR>
+"inoremap <A-k> <Esc>:m--<CR>
+"vnoremap <A-j> :m '>+<CR>
+"vnoremap <A-k> :m '<--<CR>
 
 "–––––––––––––––– SPELL CHECKER –––––—–––––––––––––––––––––––––––————————————
 setlocal spell spelllang=pl,en_us      " PL EN Spell Checker
