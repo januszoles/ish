@@ -2,6 +2,16 @@
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
+noremap <Up> <nop>
+noremap <Down> <nop>
+noremap <Left> <nop>
+" this don't work.
+noremap <Right> <C-    " never buy an apple keybord without right CTRL key
+
+nnoremap <leader>v :set invpaste paste?<CR>
+set pastetoggle=<leader>v
+set showmode
+
 
 " move line or visually selected block - alt+j/k
 fun SwitchLine(src_line_idx, direction)
@@ -20,9 +30,10 @@ fun SwitchLine(src_line_idx, direction)
   endif
 endf
 
-nnoremap <silent> <S-k> :call SwitchLine(line('.'), 'up')<CR>
-nnoremap <silent> <S-j> :call SwitchLine(line('.'), 'down')<CR>
+nnoremap <silent> <leader>kk :call SwitchLine(line('.'), 'up')<CR>
+nnoremap <silent> <leader>jj :call SwitchLine(line('.'), 'down')<CR>
 
+" No success with remaping alt on iOS (iSH.app)
 "nnoremap <A-j> :m+<CR>
 "nnoremap <A-k> :m--<CR>
 "inoremap <A-j> <Esc>:m+<CR>
@@ -76,17 +87,21 @@ set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:�
 
 " Toogle invisible characters  <SPACE>§
 nmap <Leader>§ :set list!<CR>
+
+" make a vertical column in the background at 80 characters
+set colorcolumn=80
 "––––––––––––––––––– FINDINGS FILES –––––––––––––––––––––––––––––––––––––––––
 " Seachr down into subfolders
 " Provides tab-completion for all file-related tasks
-set path+=**
+"set path+=**
+set path=.,,**
 " Display all matching files when tab complete
 set wildmenu
 "————————————————————————————————————————————————————————————————————————————
 set noerrorbells                        "No sounds
 set nowrap                              "No soft wrap text
 set ignorecase                          "Ignore case of searches
-set incsearch                           "Highlight as pattern is typed
+set incsearch                           "Incremental search as you type
 set hlsearch                            "Highlight searches
 set splitbelow splitright
 set title                               "put filename onto terminal heading
