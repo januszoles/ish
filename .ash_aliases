@@ -3,3 +3,7 @@ alias ll='ls -AFlh --group-directories-first'
 alias vimdiff='nvim -d'
 
 alias sf='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs nvim'
+
+# alias journal='nvim $(date -v-1d "+%d-%m-%Y").md'
+
+alias journal='nvim $(date "+%F_%a").md'

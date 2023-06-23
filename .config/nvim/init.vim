@@ -1,4 +1,8 @@
+"--- SOURCING ----------------------------------------------------------------
+"Automatically reloads neovim configuration file on write (w)
+"autocmd! bufwritepost init.vim source %
 
+" set leader to space
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
@@ -90,6 +94,7 @@ nmap <Leader>§ :set list!<CR>
 
 " make a vertical column in the background at 80 characters
 set colorcolumn=80
+
 "––––––––––––––––––– FINDINGS FILES –––––––––––––––––––––––––––––––––––––––––
 " Seachr down into subfolders
 " Provides tab-completion for all file-related tasks
@@ -173,3 +178,33 @@ function! FillLine( str )
 endfunction
 map <leader>fl :call FillLine( '-' )
 map <leader>fl# :call FillLine( '#' )
+
+"--- JOURNAL -----------------------------------------------------------------
+
+" autocmd VimEnter */journal/**   setlocal complete=k/root/journal/**/*
+
+" set header title for journal & enter writing mode
+function! JournalMode()
+  execute 'normal gg'
+  let journal_heading = strftime('# %F %H:%M, %a') 
+" let nowtime = strftime('%H:%M')
+" let filename = '#' . ' ' . expand('%:r') . ' ' . nowtime
+" call setline(1, filename)
+  call setline(1, journal_heading)
+  execute 'normal o'
+  "execute 'Goyo'
+endfunction
+
+" work flow for daily journal
+augroup journal
+    autocmd!
+    " populate journal template
+    autocmd VimEnter */journal/**   0r ~/.config/nvim/templates/journal.skeleton
+
+    " set header for the particular journal
+    autocmd VimEnter */journal/**   :call JournalMode()
+
+    " https://stackoverflow.com/questions/12094708/include-a-directory-recursively-for-vim-autocompletion
+    autocmd VimEnter */journal/**   set complete=k/root/journal/**/*
+  augroup END
+
