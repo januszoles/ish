@@ -15,16 +15,16 @@
 
 ## SSH Configuration
 
-> Note:  
-	Mac Prompt:      `mac:`  
-	iPad prompt:     `ipad:`  
+> Note:
+	Mac Prompt:      `mac:`
+	iPad prompt:     `ipad:`
 
 ### Intro, Basics from MAN Pages
 
 ```txt
 ~/.ssh/
     default location for all user-specific
-    configuration and authentication information.  
+    configuration and authentication information.
     permissions are r/w/x for user, none for otheres
 ```
 
@@ -34,9 +34,9 @@ drwx------    5 root     root         160 Dec  9 13:07 .ssh/
 
 ```txt
 ~/.ssh/id_rsa
-    Contains the private key for authentication.  
+    Contains the private key for authentication.
     Should be readable by the user but not
-    accessible by others.   
+    accessible by others.
     !!! ssh will IGNORE a private key file if 
     it is accessible by others.
 ```
@@ -49,8 +49,8 @@ drwx------    5 root     root         160 Dec  9 13:07 .ssh/
 
 ```txt
 ~/.ssh/id_rsa.pub
-    Contains the public key for authentication.  
-    These files are not sensitive and can (but need not) be 
+    Contains the public key for authentication.
+    These files are not sensitive and can (but need not) be
     readable by anyone.
 
 ~/.ssh/known_hosts
@@ -73,14 +73,15 @@ github.com,140.82.121.3 ecdsa-sha2-nistp256 AAAAE2V0U2...wockg=
 ipad:
 
 ```sh
-apk add openssh    # install ssh and ssh server. 
-ssh-keygen -A      # create host keys (no questions asks!) 
-passwd             # set a password for root to protect your iOS device 
+apk add openssh    # install ssh and ssh server.
+ssh-keygen -A      # create host keys (no questions asks!)
+passwd             # set a password for root to protect your iOS device
 echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config  # modified config for root login. 
 /usr/sbin/sshd     # start ssh daemon
 ```
 
-You should now be able to ssh to your device with username root and the password you typed.
+You should now be able to ssh to your device with username root and the
+password you typed.
 
 #### First Time ssh from Mac to iPad:
 
@@ -90,38 +91,41 @@ mac: `ssh root@192.168.0.24`
 ssh: connect to host 192.168.0.24 port 22: Connection refused
 ```
 
-> If connection refused, go back to iPad and restart ssh  
+> If connection refused, go back to iPad and restart ssh
 
 ipad: `/usr/sbin/sshd    # start ssh server`
 
-> NOTE: one can only ssh to iPad when /usr/sbin/sshd is ON on iPad. 
+> NOTE: one can only ssh to iPad when /usr/sbin/sshd is ON on iPad.
 
 Next try (ssh from Mac to iPad):
 
 mac: `ssh root@192.168.0.24`
 
 ```output
-The authenticity of host '192.168.0.24 (192.168.0.24)' can't be established.  
-ECDSA key fingerprint is SHA256:JVK7lKOF+6xoDoYGWC0L/ZG8CxY9DfUPN4An6/vqZ5s.  
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes  
-Warning: Permanently added '192.168.0.24' (ECDSA) to the list of known hosts.  
-root@192.168.0.24's password:  # type root password 
-Welcome to Alpine!  
+The authenticity of host '192.168.0.24 (192.168.0.24)' can't be established.
+ECDSA key fingerprint is SHA256:JVK7lKOF+6xoDoYGWC0L/ZG8CxY9DfUPN4An6/vqZ5s.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '192.168.0.24' (ECDSA) to the list of known hosts.
+root@192.168.0.24's password:  # type root password
+Welcome to Alpine!
 ```
 
-> NOTE: iPad can close connection at any time.  
->       Hack to keep iPad session alife:  
+> NOTE: iPad can close connection at any time.
+>       Hack to keep iPad session alife:
 >       ipad:  `cat /dev/location > /dev/null &`
 
 ### SSH from the same device (not tested yet)
 
-If you are trying to connect via ssh from the same device, make sure you set the port configuration of sshd to use a non standard one (greater than 1024, eg: 22000).
-You can do this by editing `/etc/ssh/sshd_config` and set `Port 22000` (Replace _22000_ with any non-standard port).
+If you are trying to connect via ssh from the same device, make sure you set
+the port configuration of sshd to use a non standard one (greater than 1024,
+eg: 22000).
+You can do this by editing `/etc/ssh/sshd_config` and set `Port 22000` (Replace
+_22000_ with any non-standard port).
 After this, you can ssh (from iSH itself) using `ssh root@localhost -p 22000`
 
 ## PasswordLess login from iPad to Mac
 
-ipad: `cd /root/.ssh`  
+ipad: `cd /root/.ssh`
 
 ipad: `ssh-keygen -C 'ipad-2-mac'`
 
@@ -150,7 +154,8 @@ The key's randomart image is:
 
 ### Copy public key from iPad to Mac
 
-> **NOTE:** To copy anything or to login from client to server you MUST enable `Remote Login` on Mac.
+> **NOTE:** To copy anything or to login from client to server you MUST enable
+> `Remote Login` on Mac.
 
 ## ON MAC
 
@@ -174,9 +179,9 @@ start ssh
   
 mac: `sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist`
 
-stop ssh  
+stop ssh
 
-mac: `sudo launchctl unload  /System/Library/LaunchDaemons/ssh.plist` 
+mac: `sudo launchctl unload  /System/Library/LaunchDaemons/ssh.plist`
 
 ### Try to copy public key from iPad to Mac
 
@@ -255,12 +260,11 @@ Starts ssh-agent for shell use.
 ipad:
 
 ```sh
-eval `ssh-agent -s`  
+eval `ssh-agent -s`
 ```
 ```
 Agent pid 54
 ```
-
 
 ipad: `ssh-add -L`
 
@@ -282,12 +286,11 @@ ipad: `ssh-add -L`
 ssh-rsa A#####...####= ipad-2-mac
 ```
 
-Now I can login to Mac without password. 
+Now I can login to Mac without password.
 
 ## Create host config file to simplify login
 
 > NOTE: `~/.ssh/config`  DOES NOT exist by default.
-
 
 ipad:
 
@@ -311,7 +314,7 @@ Next, create config on my **mac** so I could ssh to my ipad by typing: `ssh ipad
 mac: `cd ~/.ssh/`
 
 mac: `ssh-keygen -C 'mac-2-ipad'`
-  
+
 ```txt
   Generating public/private rsa key pair.
   Enter file in which to save the key (/Users/januszoles/.ssh/id_rsa): id_rsa_mac-2-ipad
@@ -366,8 +369,8 @@ mac: `cd ~/.ssh/`
 mac: `scp ./id_rsa_mac-2-ipad.pub ipad:/root/.ssh/id_rsa_mac-2-ipad.pub`
 
 ```output
-    root@192.168.0.24's password: 
-    id_rsa_mac-2-ipad.pub                                                 100%  564    35.7KB/s   00:00
+    root@192.168.0.24's password:
+    id_rsa_mac-2-ipad.pub                        100%  564    35.7KB/s   00:00
 ```
 
 ## ON IPAD
@@ -378,7 +381,7 @@ ipad:
 
 ```sh 
 cat ~/.ssh id_rsa_mac-2-ipad.pub >> authorized_keys
-```  
+```
 
 #### ipad:/root/.ssh/config file
 
@@ -391,7 +394,7 @@ Host mac
     User januszoles
 ``` 
 
-ipad:~/.ssh# `ls -Al`  
+ipad:~/.ssh# `ls -Al`
 
 ```
 -rw-r--r--    1 root     root           564 Dec 20 22:40 authorized_keys
@@ -472,14 +475,14 @@ ipad: `rc-status`
 
 ```
 Runlevel: sysinit. 
-Dynamic Runlevel: hotplugged  
-Dynamic Runlevel: needed/wanted  
-Dynamic Runlevel: manual  
+Dynamic Runlevel: hotplugged
+Dynamic Runlevel: needed/wanted
+Dynamic Runlevel: manual
 ```
 
 7. Add sshd to sysinit
 
-ipad: `rc-update add sshd`  
+ipad: `rc-update add sshd`
 
 ```
 	* service sshd added to runlevel sysinit
@@ -503,8 +506,6 @@ ipad: `rc-service sshd status`
 
 	* status: started
 
-
-
 ## CONFIGURE GITHUB ON IPAD iSH
 
 ### 1. Install git
@@ -527,7 +528,6 @@ git-2.32.0-r0 installed size:
 Install
 
 ipad: `apk add git`
-
 
 ### 2. Configure git
 
@@ -649,7 +649,6 @@ Try to clone repo from github to your ipad using SSH:
 
 ipad: `git clone git@github.com:<username>/<repository>.git`
 
-
 ***
 
 <div id='iphone6'/>
@@ -660,10 +659,13 @@ ipad: `git clone git@github.com:<username>/<repository>.git`
 No external keyboard was available.
 The Apple external Bluetooth keyboard A1314 was not listed as a device on my iPhone 6.
 
-The idea was to install and configure SSH and some other tools, so that I could log in to my iPhone from my iPad via SSH and have the possibility to use an external keyboard or from my Mac.
+The idea was to install and configure SSH and some other tools, so that I could
+log in to my iPhone from my iPad via SSH and have the possibility to use an
+external keyboard or from my Mac.
 This was just to learn a little bit more about SSH and Git.
 
-Here are the step-by-step instructions, including the wrong steps that were taken.
+Here are the step-by-step instructions, including the wrong steps that were
+taken.
 ```
 Welcome to Alpine!
 
@@ -730,7 +732,7 @@ fetch https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86/APKINDEX.tar.gz
 ERROR: unable to select packages:
   man (no such package):
     required by: world[man]
-```    
+```
 
 ```
 iPhone6:~# apk add man-pages
@@ -840,10 +842,6 @@ OK: 41 MiB in 34 packages
 iPhone6:~# man git
 ```
 GIT(1)             Git Manual             GIT(1)
-
-
-
- 
 
 NAME
    git - the stupid content tracker
@@ -1066,11 +1064,11 @@ jllll
 ::sysinit:/sbin/openrc sysinit
 
 # (d shift4) delete from curosr to the end of the line
-d$         
+d$
 ::sysinit:/sbin/openrc
 
 # write (save) and quit vi
-:wq        
+:wq
 
 # otherwise quit without saving
 :q!
@@ -1110,7 +1108,6 @@ iPhone6:~# rc-service sshd status
  * status: starting
 ```
 
-
 ```
 iPhone6:~# /usr/sbin/sshd
 iPhone6:~# 
@@ -1124,10 +1121,8 @@ Dynamic Runlevel: hotplugged
 Dynamic Runlevel: needed/wanted
 Dynamic Runlevel: manual
 
-
 iPhone6:~# rc-update add sshd
  * service sshd added to runlevel default
-
 
 iPhone6:~# rc-status
 Runlevel: default
@@ -1136,12 +1131,9 @@ Dynamic Runlevel: hotplugged
 Dynamic Runlevel: needed/wanted
 Dynamic Runlevel: manual
 
-
 iPhone6:~# rc-service sshd status
  * status: started
 ```
-
-
 
 Test from iPad
 ```
@@ -1204,7 +1196,8 @@ The key's randomart image is:
 Copy public key from iPad ---> iPhone6 
 It will be automatically added to ~/.ssh/authorize_keys on iPhone 
 and all files will be created on the fly.
-This method is way fastere then doing it by scpand copy and paste to authorized key.
+This method is way fastere then doing it by scpand copy and paste to authorized
+key.
 
 ```
 iPad:~/.ssh# ssh-copy-id -i ~/.ssh/id_rsa_ipad.pub root@192.168.0.73
@@ -1252,7 +1245,7 @@ Connection to 192.168.0.73 closed.
 iPad:~/.ssh# 
 ```
 
-<div id='iphone6-github'/>                                                                                                                                                                          
+<div id='iphone6-github'/>
 
 ## Config GitHub on iPhone6 
 
@@ -1301,10 +1294,11 @@ cat, copy and paste to  `https://github.com/settings/ssh/new`  Login first!
 iPhone6:~# cat ~/.ssh/id_ed25519.pub 
 ```
 
-Test an SSH connection 
+Test an SSH connection
 ```
 iPhone6:~# ssh -T git@github.com
-> Hi januszoles! You've successfully authenticated, but GitHub does not provide shell access.
+> Hi januszoles! You've successfully authenticated, but GitHub does not provide
+> shell access.
 ```
 
 Displays the fingerprints of all the keys that have been added to the SSH agent
@@ -1324,7 +1318,7 @@ iPhone6:~# git clone git@github.com:januszoles/ish.git
 ...
 ```
 
-Edit 
+Edit
 ```
 iPhone6:~# vi  /etc/hosts
 ```
@@ -1339,11 +1333,11 @@ iPhone6:~# cat /etc/hosts
 ```
 
 
-<div id='iphone6-keyboard'/>                                                                                                                                                                          
+<div id='iphone6-keyboard'/>
 
 ## Apple Bluetooth Keyboard A1314 Setup on iPhone6
 
-1. Go to: Settings > Bluetooth, 
+1. Go to: Settings > Bluetooth,
 
 2. Turn OFF Bluetooth,
 
@@ -1355,7 +1349,9 @@ Keyboard:
 
 5. Turn keyboard OFF: Press and hold on/off button,
 
-6. Turn keyboard ON and pair it with iPhone: Press and hold on/off button until the green light start blinking, that means it’s ready to pair with new device,
+6. Turn keyboard ON and pair it with iPhone: Press and hold on/off button until
+   the green light start blinking, that means it’s ready to pair with new
+   device,
 
 7. On iPhone6 press `keyboardName ` (if there is one)
 
@@ -1366,7 +1362,6 @@ Keyboard:
 
 9. Type the passcode on keyboard, (you need to do it just once)
 
-
 ***
 
 <div id="j13-j6"/>
@@ -1376,7 +1371,6 @@ Keyboard:
 > Note:  
 	Mac prompt:      `j13:`  
 	iPhone6 prompt:  `j6:`  
-
 
 ### Configure ssh j13 -> j6
 
@@ -1392,7 +1386,7 @@ Host j6
     IdentityFile ~/.ssh/ed25519_j13-j6
     User root
 
-j13:~/$ ssh j6
+j13:~/$ ssh j6
 Welcome to Alpine on iPhone 6!
 ```
 
