@@ -124,11 +124,11 @@ _set_timezone() {
   fi
 
   if [ -f /usr/share/zoneinfo/Europe/Warsaw ]; then
-      _info "File /usr/share/zoneinfo/Europe/"${TIMEZONE} exists. Copying..."
+      _info "File /usr/share/zoneinfo/Europe/${TIMEZONE} exists. Copying..."
       cp /usr/share/zoneinfo/Europe/"${TIMEZONE}" /etc/localtime
       _info "Timezone set to Europe/${TIMEZONE}."
   else
-      echo "File /usr/share/zoneinfo/Europe/${TIMEZONE} does not exist."
+      _info "File /usr/share/zoneinfo/Europe/${TIMEZONE} does not exist."
   fi
   
   # Print the date and time again (after changing the timezone)
