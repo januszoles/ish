@@ -11,7 +11,7 @@
 #                WORK IN PROGRESS!!!
 ######################################################################
 ##### EDIT! 
-GIT_USER="yourname"
+GIT_USER="januszolse"
 GIT_EMAIL="37184337+januszoles@users.noreply.github.com"
 GIT_DEFAULT_BRANCH="main"            #  change to master|main|whatever
 GIT_CORE_EDITOR="nvim"               #! for now workos only with nvim
