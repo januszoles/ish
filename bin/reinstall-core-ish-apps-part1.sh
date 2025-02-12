@@ -15,7 +15,7 @@ GIT_USER="januszolse"
 GIT_EMAIL="37184337+januszoles@users.noreply.github.com"
 GIT_DEFAULT_BRANCH="main"            #  change to master|main|whatever
 GIT_CORE_EDITOR="nvim"               #! for now workos only with nvim
-TIMEZONE="/Europe/Warsaw"            #  change to your location
+TIMEZONE="Warsaw"                    #  change to your location
 #
 # Central European Summer Time (CEST) is 2 hours ahead of 
 # Coordinated Universal Time (UTC).
@@ -77,8 +77,6 @@ _add_man() {
   apk add mandoc-apropos
 }
 
-
-
 _add_nvim() {
   _info "Add nvim"
   apk add neovim
@@ -103,25 +101,40 @@ _add_openrc() {
 
 _set_timezone() {
   _info "Add timezone data and set timezone to ${TIMEZONE}"
+  
+  _info "Current date and time (before change):"
   date
-  apk add tzdata 
-
+  
+  ############################################################
+  # 2025-02-12 Looks like there is no more tzdata app in repo.
+  #  apk add tzdata 
+  
   # check if 'tzdata' is installed 
-  APP_TZDATA=`which tzdata`
-  if [ -z "${APP_TZDATA}" ];then  
-    _error "Could not find the 'tzdata' executable"
-      exit 1
-  fi
+  # APP_TZDATA=`which tzdata`
+  # if [ -z "${APP_TZDATA}" ];then  
+  #  _error "Could not find the 'tzdata' executable"
+  #    exit 1
+  # fi
+  ############################################################
 
-  # check if timezone is set
+  # check if variable timezone is set
   if [ -z "${TIMEZONE}" ];then  
     _error "No timezone set"
-      exit 1
+      exit 2
   fi
 
-  cp /usr/share/zoneinfo/"${TIMEZONE}" /etc/localtime
+  if [ -f /usr/share/zoneinfo/Europe/Warsaw ]; then
+      _info "File /usr/share/zoneinfo/Europe/"${TIMEZONE} exists. Copying..."
+      cp /usr/share/zoneinfo/Europe/"${TIMEZONE}" /etc/localtime
+      _info "Timezone set to Europe/${TIMEZONE}."
+  else
+      echo "File /usr/share/zoneinfo/Europe/${TIMEZONE} does not exist."
+  fi
+  
+  # Print the date and time again (after changing the timezone)
+  _info "Date and time after changing timezone:"
   date
-  apk del tzdata
+    #  apk del tzdata
   _div
 }
 
