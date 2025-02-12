@@ -12,7 +12,7 @@
 ######################################################################
 ##### EDIT! 
 GIT_USER="yourname"
-GIT_EMAIL="youremail@example.com"
+GIT_EMAIL="37184337+januszoles@users.noreply.github.com"
 GIT_DEFAULT_BRANCH="main"            #  change to master|main|whatever
 GIT_CORE_EDITOR="nvim"               #! for now workos only with nvim
 TIMEZONE="/Europe/Warsaw"            #  change to your location
@@ -55,8 +55,8 @@ _change_repo() {
   _div
   # append new lines
   _info "Change to Alpine Linux repositories"
-  echo https://dl-cdn.alpinelinux.org/alpine/v3.14/main >> /etc/apk/repositories
-  echo https://dl-cdn.alpinelinux.org/alpine/v3.14/community >> /etc/apk/repositories
+  https://dl-cdn.alpinelinux.org/alpine/v3.18/main >> /etc/apk/repositories
+  https://dl-cdn.alpinelinux.org/alpine/v3.18/community >> /etc/apk/repositories
   # rem old lines
   sed -i -e '/http:\/\/apk.ish.app/d' /etc/apk/repositories 
   # check
